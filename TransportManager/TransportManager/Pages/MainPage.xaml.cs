@@ -1,6 +1,6 @@
 namespace TransportManager;
 
-[Bindable] // Adicione este atributo
+[Bindable]
 public sealed partial class MainPage : Page {
   public MainPageViewModel ViewModel { get; }
 
@@ -40,13 +40,20 @@ public sealed partial class MainPage : Page {
                               Content = form,
                               XamlRoot = this.XamlRoot };
 
-    var result = await dialog.ShowAsync();
+    while (true) {
+      var result = await dialog.ShowAsync();
 
-    if (result == ContentDialogResult.Primary) {
-      return CreateVehicleFromForm(form);
+      if (result == ContentDialogResult.Primary) {
+        var vehicle = CreateVehicleFromForm(form);
+        if (vehicle.IsValid(out var validationResults)) {
+          return vehicle;
+        } else {
+          await ShowValidationErrorsDialog(validationResults);
+        }
+      } else {
+        return null;
+      }
     }
-
-    return null;
   }
 
   private async Task<Vehicle?> ShowEditVehicleDialog(Vehicle vehicle) {
@@ -59,15 +66,21 @@ public sealed partial class MainPage : Page {
                               Content = form,
                               XamlRoot = this.XamlRoot };
 
-    var result = await dialog.ShowAsync();
+    while (true) {
+      var result = await dialog.ShowAsync();
 
-    if (result == ContentDialogResult.Primary) {
-      var updatedVehicle = CreateVehicleFromForm(form);
-      updatedVehicle.Id = vehicle.Id; // Mantenha o ID original
-      return updatedVehicle;
+      if (result == ContentDialogResult.Primary) {
+        var updatedVehicle = CreateVehicleFromForm(form);
+        updatedVehicle.Id = vehicle.Id; // Mantenha o ID original
+        if (updatedVehicle.IsValid(out var validationResults)) {
+          return updatedVehicle;
+        } else {
+          await ShowValidationErrorsDialog(validationResults);
+        }
+      } else {
+        return null;
+      }
     }
-
-    return null;
   }
 
   private async Task<bool> ShowRemoveVehicleDialog(Vehicle vehicle) {
@@ -104,6 +117,7 @@ public sealed partial class MainPage : Page {
                      SelectedItem = vehicle?.Status ?? VehicleStatus.Available }
     } };
   }
+
   private static Vehicle CreateVehicleFromForm(StackPanel form) {
     return new Vehicle {
       Model = ((TextBox)form.FindName("ModelTextBox")).Text,
@@ -115,6 +129,19 @@ public sealed partial class MainPage : Page {
       Status = (VehicleStatus)((ComboBox)form.FindName("StatusComboBox"))
                    .SelectedItem
     };
+  }
+
+  private async Task
+  ShowValidationErrorsDialog(ICollection<ValidationResult> validationResults) {
+    var errorMessages =
+        string.Join("\n", validationResults.Select(vr => vr.ErrorMessage));
+    var errorDialog = new ContentDialog() {
+      Title = "Erro de Validação",
+      Content = $"Por favor, corrija os seguintes erros:\n\n{errorMessages}",
+      CloseButtonText = "OK", XamlRoot = this.XamlRoot
+    };
+
+    await errorDialog.ShowAsync();
   }
 
   private void ShowLoadingIndicator() {
