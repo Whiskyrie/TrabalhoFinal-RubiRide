@@ -1,0 +1,156 @@
+﻿<Page x:Class="TransportManager.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:TransportManager"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <!-- Cabeçalho -->
+    <Grid Grid.Row="0"
+          Margin="20">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Logo -->
+      <Image Grid.Column="0"
+             Source="C:\Users\evand\Downloads\icon2.png"
+             Width="50"
+             Height="50"
+             VerticalAlignment="Center"
+             Margin="0,0,20,0"/>
+
+      <!-- Nome do Projeto -->
+      <TextBlock Grid.Column="1"
+                 Text="Sistema de Gerenciamento de Transportes"
+                 Style="{ThemeResource SubtitleTextBlockStyle}"
+                 VerticalAlignment="Center"
+                 TextWrapping="Wrap"/>
+    </Grid>
+
+    <!-- Conteúdo Principal -->
+    <ScrollViewer Grid.Row="1">
+      <StackPanel Margin="20">
+        <!-- Lista de Veículos -->
+        <TextBlock Text="Veículos"
+                   Style="{ThemeResource SubtitleTextBlockStyle}"
+                   Margin="0,0,0,10"/>
+        <ListView ItemsSource="{Binding Vehicles}"
+                  SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
+                  BorderThickness="1"
+                  BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                  Margin="0,0,0,20">
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <TextBlock>
+                            <Run Text="{Binding Model}"/>
+                            <Run Text=" - "/>
+                            <Run Text="{Binding LicensePlate}"/>
+              </TextBlock>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Detalhes do Veículo Selecionado -->
+        <StackPanel Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Padding="15"
+                    Margin="0,0,0,20">
+          <TextBlock Text="Detalhes do Veículo"
+                     Style="{ThemeResource SubtitleTextBlockStyle}"
+                     Margin="0,0,0,10"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Text="Modelo: "
+                       FontWeight="SemiBold"/>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Text="{Binding SelectedVehicle.Model}"/>
+
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Text="Ano: "
+                       FontWeight="SemiBold"/>
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       Text="{Binding SelectedVehicle.Year}"/>
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       Text="Placa: "
+                       FontWeight="SemiBold"/>
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
+                       Text="{Binding SelectedVehicle.LicensePlate}"/>
+
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       Text="Capacidade: "
+                       FontWeight="SemiBold"/>
+            <TextBlock Grid.Row="3"
+                       Grid.Column="1"
+                       Text="{Binding SelectedVehicle.Capacity}"/>
+
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Text="Tipo: "
+                       FontWeight="SemiBold"/>
+            <TextBlock Grid.Row="4"
+                       Grid.Column="1"
+                       Text="{Binding SelectedVehicle.Type}"/>
+
+            <TextBlock Grid.Row="5"
+                       Grid.Column="0"
+                       Text="Status: "
+                       FontWeight="SemiBold"/>
+            <TextBlock Grid.Row="5"
+                       Grid.Column="1"
+                       Text="{Binding SelectedVehicle.Status}"/>
+          </Grid>
+        </StackPanel>
+
+        <!-- Botões de Ação -->
+        <StackPanel Orientation="Horizontal"
+                    Margin="0,20,0,0">
+          <Button Content="Adicionar Veículo"
+                  Command="{Binding AddVehicleCommand}"
+                  Margin="0,0,10,0"
+                  Style="{ThemeResource AccentButtonStyle}"/>
+          <Button Content="Editar Veículo"
+                  Command="{Binding EditVehicleCommand}"
+                  IsEnabled="{Binding IsVehicleSelected}"
+                  Margin="0,0,10,0"/>
+          <Button Content="Remover Veículo"
+                  Command="{Binding RemoveVehicleCommand}"
+                  IsEnabled="{Binding IsVehicleSelected}"/>
+        </StackPanel>
+
+        <TextBlock x:Name="ErrorMessageTextBlock"
+                   Foreground="Red"
+                   TextWrapping="Wrap"
+                   Visibility="Collapsed"
+                   Margin="0,20,0,0"/>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</Page>
