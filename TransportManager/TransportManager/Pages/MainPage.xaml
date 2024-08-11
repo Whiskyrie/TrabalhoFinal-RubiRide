@@ -20,7 +20,7 @@
 
       <!-- Logo -->
       <Image Grid.Column="0"
-             Source="C:\Users\evand\Downloads\icon2.png"
+             Source="C:\Users\evand\Downloads\icon.png"
              Width="50"
              Height="50"
              VerticalAlignment="Center"
@@ -35,122 +35,325 @@
     </Grid>
 
     <!-- Conteúdo Principal -->
-    <ScrollViewer Grid.Row="1">
-      <StackPanel Margin="20">
-        <!-- Lista de Veículos -->
-        <TextBlock Text="Veículos"
-                   Style="{ThemeResource SubtitleTextBlockStyle}"
-                   Margin="0,0,0,10"/>
-        <ListView ItemsSource="{Binding Vehicles}"
-                  SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
-                  BorderThickness="1"
-                  BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
-                  Margin="0,0,0,20">
-          <ListView.ItemTemplate>
-            <DataTemplate>
-              <TextBlock>
-                            <Run Text="{Binding Model}"/>
-                            <Run Text=" - "/>
-                            <Run Text="{Binding LicensePlate}"/>
-              </TextBlock>
-            </DataTemplate>
-          </ListView.ItemTemplate>
-        </ListView>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
 
-        <!-- Detalhes do Veículo Selecionado -->
-        <StackPanel Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                    Padding="15"
-                    Margin="0,0,0,20">
-          <TextBlock Text="Detalhes do Veículo"
+      <!-- Coluna de Veículos -->
+      <ScrollViewer Grid.Column="0">
+        <StackPanel Margin="20">
+          <!-- Lista de Veículos -->
+          <TextBlock Text="Veículos"
                      Style="{ThemeResource SubtitleTextBlockStyle}"
                      Margin="0,0,0,10"/>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto"/>
-              <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-              <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+          <ListView ItemsSource="{Binding Vehicles}"
+                    SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    Margin="0,0,0,20">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                                    <Run Text="{Binding Model}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{Binding LicensePlate}"/>
+                </TextBlock>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
 
-            <TextBlock Grid.Row="0"
-                       Grid.Column="0"
-                       Text="Modelo: "
-                       FontWeight="SemiBold"/>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Text="{Binding SelectedVehicle.Model}"/>
+          <!-- Detalhes do Veículo Selecionado -->
+          <StackPanel Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                      Padding="15"
+                      Margin="0,0,0,20">
+            <TextBlock Text="Detalhes do Veículo"
+                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,10"/>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="1"
-                       Grid.Column="0"
-                       Text="Ano: "
-                       FontWeight="SemiBold"/>
-            <TextBlock Grid.Row="1"
-                       Grid.Column="1"
-                       Text="{Binding SelectedVehicle.Year}"/>
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Text="Modelo: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="0"
+                         Grid.Column="1"
+                         Text="{Binding SelectedVehicle.Model}"/>
 
-            <TextBlock Grid.Row="2"
-                       Grid.Column="0"
-                       Text="Placa: "
-                       FontWeight="SemiBold"/>
-            <TextBlock Grid.Row="2"
-                       Grid.Column="1"
-                       Text="{Binding SelectedVehicle.LicensePlate}"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="0"
+                         Text="Ano: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Text="{Binding SelectedVehicle.Year}"/>
 
-            <TextBlock Grid.Row="3"
-                       Grid.Column="0"
-                       Text="Capacidade: "
-                       FontWeight="SemiBold"/>
-            <TextBlock Grid.Row="3"
-                       Grid.Column="1"
-                       Text="{Binding SelectedVehicle.Capacity}"/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="0"
+                         Text="Placa: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="1"
+                         Text="{Binding SelectedVehicle.LicensePlate}"/>
 
-            <TextBlock Grid.Row="4"
-                       Grid.Column="0"
-                       Text="Tipo: "
-                       FontWeight="SemiBold"/>
-            <TextBlock Grid.Row="4"
-                       Grid.Column="1"
-                       Text="{Binding SelectedVehicle.Type}"/>
+              <TextBlock Grid.Row="3"
+                         Grid.Column="0"
+                         Text="Capacidade: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="3"
+                         Grid.Column="1"
+                         Text="{Binding SelectedVehicle.Capacity}"/>
 
-            <TextBlock Grid.Row="5"
-                       Grid.Column="0"
-                       Text="Status: "
-                       FontWeight="SemiBold"/>
-            <TextBlock Grid.Row="5"
-                       Grid.Column="1"
-                       Text="{Binding SelectedVehicle.Status}"/>
-          </Grid>
+              <TextBlock Grid.Row="4"
+                         Grid.Column="0"
+                         Text="Tipo: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="4"
+                         Grid.Column="1"
+                         Text="{Binding SelectedVehicle.Type}"/>
+
+              <TextBlock Grid.Row="5"
+                         Grid.Column="0"
+                         Text="Status: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="5"
+                         Grid.Column="1"
+                         Text="{Binding SelectedVehicle.Status}"/>
+            </Grid>
+          </StackPanel>
+
+          <!-- Botões de Ação para Veículos -->
+          <StackPanel Orientation="Horizontal"
+                      Margin="0,10,0,10">
+            <Button Content="Adicionar Veículo"
+                    Command="{Binding AddVehicleCommand}"
+                    Margin="0,10,10,10"
+                    Style="{ThemeResource AccentButtonStyle}"/>
+            <Button Content="Editar Veículo"
+                    Command="{Binding EditVehicleCommand}"
+                    IsEnabled="{Binding IsVehicleSelected}"
+                    Margin="0,10,10,10"/>
+            <Button Content="Remover Veículo"
+                    Command="{Binding RemoveVehicleCommand}"
+                    IsEnabled="{Binding IsVehicleSelected}"/>
+          </StackPanel>
         </StackPanel>
+      </ScrollViewer>
 
-        <!-- Botões de Ação -->
-        <StackPanel Orientation="Horizontal"
-                    Margin="0,20,0,0">
-          <Button Content="Adicionar Veículo"
-                  Command="{Binding AddVehicleCommand}"
-                  Margin="0,0,10,0"
-                  Style="{ThemeResource AccentButtonStyle}"/>
-          <Button Content="Editar Veículo"
-                  Command="{Binding EditVehicleCommand}"
-                  IsEnabled="{Binding IsVehicleSelected}"
-                  Margin="0,0,10,0"/>
-          <Button Content="Remover Veículo"
-                  Command="{Binding RemoveVehicleCommand}"
-                  IsEnabled="{Binding IsVehicleSelected}"/>
+      <!-- Coluna de Rotas e Motoristas -->
+      <ScrollViewer Grid.Column="1">
+        <StackPanel Margin="20">
+          <!-- Lista de Rotas -->
+          <TextBlock Text="Rotas"
+                     Style="{ThemeResource SubtitleTextBlockStyle}"
+                     Margin="0,0,0,10"/>
+          <ListView ItemsSource="{Binding Routes}"
+                    SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    Margin="0,0,0,20">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                                    <Run Text="{Binding Name}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{Binding Status}"/>
+                </TextBlock>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+
+          <!-- Detalhes da Rota Selecionada -->
+          <StackPanel Visibility="{Binding IsRouteSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                      Padding="15"
+                      Margin="0,0,0,20">
+            <TextBlock Text="Detalhes da Rota"
+                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,10"/>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Text="Nome: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="0"
+                         Grid.Column="1"
+                         Text="{Binding SelectedDriver.Name}"/>
+
+              <TextBlock Grid.Row="1"
+                         Grid.Column="0"
+                         Text="Origem: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Text="{Binding SelectedRoute.StartLocation}"/>
+
+              <TextBlock Grid.Row="2"
+                         Grid.Column="0"
+                         Text="Destino: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="1"
+                         Text="{Binding SelectedRoute.EndLocation}"/>
+
+              <TextBlock Grid.Row="3"
+                         Grid.Column="0"
+                         Text="Distância: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="3"
+                         Grid.Column="1"
+                         Text="{Binding SelectedRoute.Distance}"/>
+
+              <TextBlock Grid.Row="4"
+                         Grid.Column="0"
+                         Text="Duração Estimada: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="4"
+                         Grid.Column="1"
+                         Text="{Binding SelectedRoute.EstimatedDuration}"/>
+            </Grid>
+          </StackPanel>
+
+          <!-- Botões de Ação para Rotas -->
+          <StackPanel Orientation="Horizontal"
+                      Margin="0,10,0,20">
+            <Button Content="Adicionar Rota"
+                    Command="{Binding AddRouteCommand}"
+                    Margin="0,10,10,10"
+                    Style="{ThemeResource AccentButtonStyle}"/>
+            <Button Content="Editar Rota"
+                    Command="{Binding EditRouteCommand}"
+                    IsEnabled="{Binding IsRouteSelected}"
+                    Margin="0,10,10,10"/>
+            <Button Content="Remover Rota"
+                    Command="{Binding RemoveRouteCommand}"
+                    IsEnabled="{Binding IsRouteSelected}"/>
+          </StackPanel>
+
+          <!-- Lista de Motoristas -->
+          <TextBlock Text="Motoristas"
+                     Style="{ThemeResource SubtitleTextBlockStyle}"
+                     Margin="0,10,0,10"/>
+          <ListView ItemsSource="{Binding Drivers}"
+                    SelectedItem="{Binding SelectedDriver, Mode=TwoWay}"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                    Margin="0,0,0,20">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <TextBlock>
+                                    <Run Text="{Binding Name}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{Binding LicenseNumber}"/>
+                </TextBlock>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+
+          <!-- Detalhes do Motorista Selecionado -->
+          <StackPanel Visibility="{Binding IsDriverSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                      Padding="15"
+                      Margin="0,0,0,20">
+            <TextBlock Text="Detalhes do Motorista"
+                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                       Margin="0,0,0,10"/>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Text="Nome: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="0"
+                         Grid.Column="1"
+                         Text="{Binding SelectedDriver.Name}"/>
+
+              <TextBlock Grid.Row="1"
+                         Grid.Column="0"
+                         Text="Número da Carteira: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Text="{Binding SelectedDriver.LicenseNumber}"/>
+
+              <TextBlock Grid.Row="2"
+                         Grid.Column="0"
+                         Text="Validade da Carteira: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="1"
+                         Text="{Binding SelectedDriver.LicenseExpirationDateFormatted}"/>
+
+              <TextBlock Grid.Row="3"
+                         Grid.Column="0"
+                         Text="Status: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="3"
+                         Grid.Column="1"
+                         Text="{Binding SelectedDriver.Status}"/>
+            </Grid>
+          </StackPanel>
+
+          <!-- Botões de Ação para Motoristas -->
+          <StackPanel Orientation="Horizontal"
+                      Margin="0,0,0,20">
+            <Button Content="Adicionar Motorista"
+                    Command="{Binding AddDriverCommand}"
+                    Margin="0,0,10,0"
+                    Style="{ThemeResource AccentButtonStyle}"/>
+            <Button Content="Editar Motorista"
+                    Command="{Binding EditDriverCommand}"
+                    IsEnabled="{Binding IsDriverSelected}"
+                    Margin="0,0,10,0"/>
+            <Button Content="Remover Motorista"
+                    Command="{Binding RemoveDriverCommand}"
+                    IsEnabled="{Binding IsDriverSelected}"/>
+          </StackPanel>
+
+          <!-- Mensagem de Erro -->
+          <TextBlock x:Name="ErrorMessageTextBlock"
+                     Foreground="Red"
+                     TextWrapping="Wrap"
+                     Visibility="Collapsed"
+                     Margin="0,20,0,0"/>
         </StackPanel>
-
-        <TextBlock x:Name="ErrorMessageTextBlock"
-                   Foreground="Red"
-                   TextWrapping="Wrap"
-                   Visibility="Collapsed"
-                   Margin="0,20,0,0"/>
-      </StackPanel>
-    </ScrollViewer>
+      </ScrollViewer>
+    </Grid>
   </Grid>
 </Page>
