@@ -15,11 +15,9 @@ public class VehicleRepository
 
   public async Task UpdateVehicleAsync(Vehicle vehicle) {
     try {
-      var existingVehicle = await _context.Vehicles.FindAsync(vehicle.Id);
-      if (existingVehicle == null) {
-        throw new Exception("O veículo não foi encontrado no banco de dados.");
-      }
-
+      var existingVehicle =
+          await _context.Vehicles.FindAsync(vehicle.Id) ?? throw new Exception(
+              "O veículo não foi encontrado no banco de dados.");
       _context.Entry(existingVehicle).CurrentValues.SetValues(vehicle);
       await _context.SaveChangesAsync();
     } catch (DbUpdateConcurrencyException ex) {

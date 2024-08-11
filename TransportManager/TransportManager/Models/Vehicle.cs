@@ -54,7 +54,7 @@ public class Vehicle : BaseEntity {
   public bool IsValid(out ICollection<ValidationResult> validationResults) {
     var context =
         new ValidationContext(this, serviceProvider: null, items: null);
-    validationResults = new List<ValidationResult>();
+    validationResults = [];
     return Validator.TryValidateObject(this, context, validationResults, true);
   }
 }
