@@ -8,6 +8,8 @@ public class MainPageViewModel : INotifyPropertyChanged {
   private ObservableCollection<Vehicle> _vehicles;
   private ObservableCollection<Driver> _drivers;
   private ObservableCollection<Route> _routes;
+  private ObservableCollection<string> _cities;
+  private readonly CityDistances _cityDistances;
   private Vehicle? _selectedVehicle;
   private Driver? _selectedDriver;
   private Route? _selectedRoute;
@@ -33,6 +35,13 @@ public class MainPageViewModel : INotifyPropertyChanged {
     set {
       _routes = value;
       OnPropertyChanged(nameof(Routes));
+    }
+  }
+  public ObservableCollection<string> Cities {
+    get => _cities;
+    set {
+      _cities = value;
+      OnPropertyChanged(nameof(Cities));
     }
   }
 
@@ -122,6 +131,8 @@ public class MainPageViewModel : INotifyPropertyChanged {
     _vehicles = [];
     _drivers = [];
     _routes = [];
+    _cityDistances = new CityDistances();
+    _cities = CitiesManager.Cities;
 
     AddVehicleCommand = new AsyncRelayCommand(AddVehicle);
     EditVehicleCommand =
@@ -227,6 +238,7 @@ public class MainPageViewModel : INotifyPropertyChanged {
 
     var newRoute = await AddRouteRequested();
     if (newRoute != null) {
+      UpdateRouteDistance(newRoute);
       await _routeRepository.AddRouteAsync(newRoute);
       Routes.Add(newRoute);
     }
@@ -290,6 +302,7 @@ public class MainPageViewModel : INotifyPropertyChanged {
     try {
       var updatedRoute = await EditRouteRequested(SelectedRoute);
       if (updatedRoute != null) {
+        UpdateRouteDistance(updatedRoute);
         System.Diagnostics.Debug.WriteLine(
             $"Editando rota com ID: {updatedRoute.Id}");
         await _routeRepository.UpdateRouteAsync(updatedRoute);
@@ -305,6 +318,17 @@ public class MainPageViewModel : INotifyPropertyChanged {
     } catch (Exception ex) {
       System.Diagnostics.Debug.WriteLine($"Erro ao editar rota: {ex.Message}");
       ShowErrorMessage?.Invoke($"Erro ao editar rota: {ex.Message}");
+    }
+  }
+  private void UpdateRouteDistance(Route route) {
+    double distance =
+        _cityDistances.GetDistance(route.StartLocation, route.EndLocation);
+    if (distance >= 0) {
+      route.Distance = distance;
+    } else {
+      // Caso a distância não seja encontrada, você pode definir um valor padrão
+      // ou mostrar um erro
+      ShowErrorMessage?.Invoke("Distância entre as cidades não encontrada.");
     }
   }
 
