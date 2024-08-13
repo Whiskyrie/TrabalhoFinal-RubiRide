@@ -196,6 +196,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
 
               <TextBlock Grid.Row="0"
@@ -237,6 +238,14 @@
               <TextBlock Grid.Row="4"
                          Grid.Column="1"
                          Text="{Binding SelectedRoute.EstimatedDuration}"/>
+
+              <TextBlock Grid.Row="5"
+                         Grid.Column="0"
+                         Text="Veículo: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="5"
+                         Grid.Column="1"
+                         Text="{Binding SelectedRoute.Vehicle.Model}"/>
             </Grid>
           </StackPanel>
 
