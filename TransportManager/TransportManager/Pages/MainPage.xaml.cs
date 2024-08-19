@@ -343,23 +343,48 @@ public sealed partial class MainPage : Page {
         new NumberBox { Header = "Distância (km)", Name = "DistanceNumberBox",
                         Value = route?.Distance ?? 0, IsEnabled = false };
 
-    void UpdateDistance() {
+    var daysNumberBox =
+        new NumberBox { Header = "Dias", Name = "DaysNumberBox",
+                        Value = route?.EstimatedDuration.Days ?? 0,
+                        Minimum = 0 };
+    var hoursNumberBox =
+        new NumberBox { Header = "Horas", Name = "HoursNumberBox",
+                        Value = route?.EstimatedDuration.Hours ?? 0,
+                        Minimum = 0, Maximum = 23 };
+    var minutesNumberBox =
+        new NumberBox { Header = "Minutos", Name = "MinutesNumberBox",
+                        Value = route?.EstimatedDuration.Minutes ?? 0,
+                        Minimum = 0, Maximum = 59 };
+
+    void UpdateDistanceAndDuration() {
       if (startLocationComboBox.SelectedItem is string startLocation &&
           endLocationComboBox.SelectedItem is string endLocation) {
         var distance =
             new CityDistances().GetDistance(startLocation, endLocation);
         distanceNumberBox.Value = distance >= 0 ? distance : 0;
+
+        // Calcular duração estimada
+        if (distance > 0) {
+          double averageSpeed = 80; // km/h
+          double hours = distance / averageSpeed;
+          var duration = TimeSpan.FromHours(hours);
+          daysNumberBox.Value = duration.Days;
+          hoursNumberBox.Value = duration.Hours;
+          minutesNumberBox.Value = duration.Minutes;
+        }
       }
     }
 
-    startLocationComboBox.SelectionChanged += (s, e) => UpdateDistance();
-    endLocationComboBox.SelectionChanged += (s, e) => UpdateDistance();
+    startLocationComboBox.SelectionChanged += (s, e) =>
+        UpdateDistanceAndDuration();
+    endLocationComboBox.SelectionChanged += (s, e) =>
+        UpdateDistanceAndDuration();
 
     return new StackPanel { Children = {
       startLocationComboBox, endLocationComboBox, distanceNumberBox,
-      new TimePicker { Header = "Duração Estimada",
-                       Name = "EstimatedDurationPicker",
-                       Time = route?.EstimatedDuration ?? TimeSpan.Zero },
+      new StackPanel { Orientation = Orientation.Horizontal,
+                       Children = { daysNumberBox, hoursNumberBox,
+                                    minutesNumberBox } },
       new ComboBox { Header = "Motorista", Name = "DriverComboBox",
                      ItemsSource = drivers, DisplayMemberPath = "Name",
                      SelectedItem = route?.Driver ?? drivers.FirstOrDefault() },
@@ -373,26 +398,29 @@ public sealed partial class MainPage : Page {
     var startLocationComboBox =
         (ComboBox)form.FindName("StartLocationComboBox");
     var endLocationComboBox = (ComboBox)form.FindName("EndLocationComboBox");
-    var estimatedDurationPicker =
-        (TimePicker)form.FindName("EstimatedDurationPicker");
+    var daysNumberBox = (NumberBox)form.FindName("DaysNumberBox");
+    var hoursNumberBox = (NumberBox)form.FindName("HoursNumberBox");
+    var minutesNumberBox = (NumberBox)form.FindName("MinutesNumberBox");
     var driverComboBox = (ComboBox)form.FindName("DriverComboBox");
     var vehicleComboBox = (ComboBox)form.FindName("VehicleComboBox");
 
-    // Recuperando a distância da classe CityDistances
     var distance = new CityDistances().GetDistance(
         startLocationComboBox.SelectedItem as string ?? "",
         endLocationComboBox.SelectedItem as string ?? "");
+
+    var estimatedDuration =
+        new TimeSpan((int)daysNumberBox.Value, (int)hoursNumberBox.Value,
+                     (int)minutesNumberBox.Value, 0);
 
     return new Route { StartLocation =
                            startLocationComboBox.SelectedItem as string ?? "",
                        EndLocation =
                            endLocationComboBox.SelectedItem as string ?? "",
                        Distance = distance,
-                       EstimatedDuration = estimatedDurationPicker.Time,
+                       EstimatedDuration = estimatedDuration,
                        Driver = driverComboBox.SelectedItem as Driver,
                        Vehicle = vehicleComboBox.SelectedItem as Vehicle };
   }
-
   private void ShowLoadingIndicator() {
     // Implemente a lógica para mostrar um indicador de carregamento
     // Por exemplo, você pode ter um ProgressRing na sua UI:
