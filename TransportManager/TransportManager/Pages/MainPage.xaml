@@ -169,9 +169,9 @@
             <ListView.ItemTemplate>
               <DataTemplate>
                 <TextBlock>
-                                    <Run Text="{Binding Name}"/>
+                                    <Run Text="{Binding StartLocation}"/>
                                     <Run Text=" - "/>
-                                    <Run Text="{Binding Status}"/>
+                                    <Run Text="{Binding EndLocation}"/>
                 </TextBlock>
               </DataTemplate>
             </ListView.ItemTemplate>
@@ -196,6 +196,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
 
               <TextBlock Grid.Row="0"
@@ -204,7 +205,7 @@
                          FontWeight="SemiBold"/>
               <TextBlock Grid.Row="0"
                          Grid.Column="1"
-                         Text="{Binding SelectedDriver.Name}"/>
+                         Text="{Binding SelectedRoute.Driver.Name}"/>
 
               <TextBlock Grid.Row="1"
                          Grid.Column="0"
@@ -237,6 +238,14 @@
               <TextBlock Grid.Row="4"
                          Grid.Column="1"
                          Text="{Binding SelectedRoute.EstimatedDuration}"/>
+
+              <TextBlock Grid.Row="5"
+                         Grid.Column="0"
+                         Text="Veículo: "
+                         FontWeight="SemiBold"/>
+              <TextBlock Grid.Row="5"
+                         Grid.Column="1"
+                         Text="{Binding SelectedRoute.Vehicle.Model}"/>
             </Grid>
           </StackPanel>
 

@@ -23,9 +23,6 @@ public class Driver : BaseEntity {
     set => SetProperty(ref _licenseExpirationDate, value.Date);
   }
 
-  public string LicenseExpirationDateFormatted =>
-      LicenseExpirationDate.ToString("dd/MM/yyyy");
-
   public DriverStatus Status {
     get => _status;
     set => SetProperty(ref _status, value);

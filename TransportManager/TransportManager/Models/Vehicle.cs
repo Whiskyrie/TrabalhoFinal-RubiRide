@@ -61,4 +61,4 @@ public class Vehicle : BaseEntity {
 
 public enum VehicleType { Car, Truck, Van, Bus, Motorcycle }
 
-public enum VehicleStatus { Available, InUse, UnderMaintenance, OutOfService }
+public enum VehicleStatus { Available, InUse, OutOfService }

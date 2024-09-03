@@ -89,4 +89,13 @@ public class Route : BaseEntity {
                        Distance = distance,
                        EstimatedDuration = estimatedDuration };
   }
+
+  public void CalculateEstimatedDuration() {
+    if (Vehicle != null && Distance > 0) {
+      // Assumindo que a velocidade média é de 80 km/h
+      double averageSpeed = 80;
+      double hours = Distance / averageSpeed;
+      EstimatedDuration = TimeSpan.FromHours(hours);
+    }
+  }
 }
