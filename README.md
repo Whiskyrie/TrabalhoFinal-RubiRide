@@ -11,8 +11,6 @@ gestão e o monitoramento de suas operações.**
 
 - Gerenciamento de Frota: Controle e monitoramento de veículos, manutenção e registro de incidentes.
 - Roteirização: Planejamento de rotas eficientes para otimização dos percursos.
-- Monitoramento em Tempo Real: Acompanhamento da localização dos veículos em tempo real.
-- Relatórios e Análises: Geração de relatórios detalhados sobre o desempenho e eficiência das operações.
   
 ### 🏭Funcionalidades
   
