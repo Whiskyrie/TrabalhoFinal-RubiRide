@@ -18,4 +18,3 @@ gestão e o monitoramento de suas operações.**
   
 - Cadastro de Veículos: Adicione, edite e remova veículos da frota.
 - Planejamento de Rotas: Defina rotas personalizadas e receba sugestões para otimização.
-- Relatórios Personalizados: Gere relatórios conforme a necessidade para análise detalhada.
