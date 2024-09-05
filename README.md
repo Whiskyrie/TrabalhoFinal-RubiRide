@@ -17,6 +17,5 @@ gestão e o monitoramento de suas operações.**
 ### 🏭Funcionalidades
   
 - Cadastro de Veículos: Adicione, edite e remova veículos da frota.
-- Agendamento de Manutenção: Configure alertas e registros de manutenção para garantir a integridade dos veículos.
 - Planejamento de Rotas: Defina rotas personalizadas e receba sugestões para otimização.
 - Relatórios Personalizados: Gere relatórios conforme a necessidade para análise detalhada.
