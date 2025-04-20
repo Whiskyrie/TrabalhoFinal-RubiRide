@@ -17,4 +17,5 @@ global using System.Diagnostics;
 global using Microsoft.EntityFrameworkCore;
 global using BindableAttribute = Microsoft.UI.Xaml.Data.BindableAttribute;
 global using Microsoft.EntityFrameworkCore.Design;
-global using  System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations;
+global using Microsoft.EntityFrameworkCore.ChangeTracking;

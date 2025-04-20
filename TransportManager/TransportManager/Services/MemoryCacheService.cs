@@ -1,4 +1,4 @@
-using TransportManager.Services;
+namespace TransportManager.Services;
 
 public class MemoryCacheService : ICacheService, IDisposable
 {
@@ -11,6 +11,7 @@ public class MemoryCacheService : ICacheService, IDisposable
     private readonly Dictionary<string, CacheItem> _cache = new();
     private readonly object _lock = new();
     private readonly Timer _cleanupTimer;
+    private bool _disposed;
 
     public MemoryCacheService()
     {
@@ -33,13 +34,16 @@ public class MemoryCacheService : ICacheService, IDisposable
 
     public void Set<T>(string key, T value, int expirationInMinutes = 10)
     {
+        if (value == null)
+            throw new ArgumentNullException(nameof(value));
+
         lock (_lock)
         {
             var expirationTime = DateTime.UtcNow.AddMinutes(expirationInMinutes);
-            
+
             _cache[key] = new CacheItem
             {
-                Value = value!,
+                Value = value,
                 ExpirationTime = expirationTime
             };
         }
@@ -79,6 +83,25 @@ public class MemoryCacheService : ICacheService, IDisposable
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        if (disposing)
+        {
+            _cleanupTimer?.Dispose();
+        }
+
+        _disposed = true;
+    }
+
+    ~MemoryCacheService()
+    {
+        Dispose(false);
     }
 }
