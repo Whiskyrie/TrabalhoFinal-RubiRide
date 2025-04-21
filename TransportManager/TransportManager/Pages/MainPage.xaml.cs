@@ -177,10 +177,10 @@ public sealed partial class MainPage : Page
   }
 
   private async Task
-  ShowValidationErrorsDialog(ICollection<ValidationResult> validationResults)
+ ShowValidationErrorsDialog(ICollection<ValidationResult> validationResults)
   {
     var errorMessages =
-        string.Join("\n", validationResults.Select(vr => vr.GetErrorMessages()));
+        string.Join("\n", validationResults.Select(vr => vr.ErrorMessage));
     var errorDialog = new ContentDialog()
     {
       Title = "Erro de Validação",

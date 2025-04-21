@@ -1,16 +1,10 @@
 // VehicleService.cs
 namespace TransportManager.Services;
 
-public class VehicleService : IVehicleService
+public class VehicleService(IVehicleRepository vehicleRepository, ILogger<VehicleService> logger) : IVehicleService
 {
-    private readonly IVehicleRepository _vehicleRepository;
-    private readonly ILogger<VehicleService> _logger;
-
-    public VehicleService(IVehicleRepository vehicleRepository, ILogger<VehicleService> logger)
-    {
-        _vehicleRepository = vehicleRepository ?? throw new ArgumentNullException(nameof(vehicleRepository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly IVehicleRepository _vehicleRepository = vehicleRepository ?? throw new ArgumentNullException(nameof(vehicleRepository));
+    private readonly ILogger<VehicleService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task<List<Vehicle>> GetAllVehiclesAsync()
     {
@@ -107,10 +101,10 @@ public class VehicleService : IVehicleService
         }
     }
 
-    public async Task<bool> IsVehicleAvailableForRouteAsync(string vehicleId, DateTime startDate, DateTime endDate)
+    public Task<bool> IsVehicleAvailableForRouteAsync(string vehicleId, DateTime startDate, DateTime endDate)
     {
         // Implementar lógica para verificar se o veículo está disponível para uma rota no período especificado
         // Esta é uma funcionalidade que seria útil adicionar ao sistema
-        return true; // Implementação simplificada
+        return Task.FromResult(true); // Implementação simplificada
     }
 }
