@@ -1,11 +1,9 @@
 using TransportManager.Services;
-using TransportManager.Validation;
 
 namespace TransportManager.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         // Registrar repositórios
@@ -24,10 +22,7 @@ public static class ServiceCollectionExtensions
         services.Decorate<IDriverService, CachedDriverService>();
         services.Decorate<IRouteService, CachedRouteService>();
 
-        // Registrar validadores
-        services.AddTransient<IValidator<Vehicle>, VehicleValidator>();
-        services.AddTransient<IValidator<Driver>, DriverValidator>();
-        services.AddTransient<IValidator<Route>, RouteValidator>();
+        // REMOVIDO: Registrar validadores (não são mais necessários)
 
         // Registrar serviços adicionais
         services.AddTransient<Func<XamlRoot, IDialogService>>(
@@ -40,17 +35,15 @@ public static class ServiceCollectionExtensions
         where TService : class
         where TDecorator : class, TService
     {
-        // Obter o descritor do serviço original
+        // O mesmo código do método Decorate permanece...
         var serviceDescriptor = services.FirstOrDefault(sd => sd.ServiceType == typeof(TService));
         if (serviceDescriptor == null)
         {
             throw new InvalidOperationException($"Service of type {typeof(TService).Name} is not registered.");
         }
 
-        // Remover o serviço original
         services.Remove(serviceDescriptor);
 
-        // Registrar o serviço original com outro nome
         if (serviceDescriptor.ImplementationType != null)
         {
             services.Add(new ServiceDescriptor(
@@ -59,12 +52,10 @@ public static class ServiceCollectionExtensions
                 serviceDescriptor.Lifetime));
         }
 
-        // Registrar o decorador
         services.Add(new ServiceDescriptor(
             typeof(TService),
             provider =>
             {
-                // Obter a instância do serviço original
                 var originalInstance = serviceDescriptor.ImplementationType != null
                     ? provider.GetRequiredService(serviceDescriptor.ImplementationType)
                     : serviceDescriptor.ImplementationFactory?.Invoke(provider);
@@ -74,7 +65,6 @@ public static class ServiceCollectionExtensions
                     throw new InvalidOperationException($"Failed to resolve implementation for {typeof(TService).Name}.");
                 }
 
-                // Criar o decorador
                 return ActivatorUtilities.CreateInstance(
                     provider,
                     typeof(TDecorator),
