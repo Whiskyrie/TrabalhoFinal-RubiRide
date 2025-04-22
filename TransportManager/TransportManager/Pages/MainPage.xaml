@@ -6,803 +6,1276 @@
       xmlns:converters="using:TransportManager.Converters"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <!-- Conversores -->
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Page.Resources>
+                <!-- Conversores -->
+                <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+                <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
+                <converters:DriverStatusToColorConverter x:Key="DriverStatusToColorConverter"/>
+                <converters:DistanceFormatter x:Key="DistanceFormatter"/>
+                <converters:TimeSpanFormatter x:Key="TimeSpanFormatter"/>
+                <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+                <converters:BoolToValidityTextConverter x:Key="BoolToValidityTextConverter"/>
+                <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
 
-        <!-- Estilos -->
-        <Style x:Key="SectionHeaderStyle"
-                TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="20"/>
-            <Setter Property="FontWeight"
-                    Value="SemiBold"/>
-            <Setter Property="Margin"
-                    Value="0,0,0,12"/>
-            <Setter Property="Foreground"
-                    Value="#333333"/>
-        </Style>
+                <!-- Estilos -->
+                <Style x:Key="PageTitleStyle"
+                       TargetType="TextBlock">
+                        <Setter Property="FontSize"
+                                Value="24"/>
+                        <Setter Property="FontWeight"
+                                Value="SemiBold"/>
+                        <Setter Property="Foreground"
+                                Value="White"/>
+                        <Setter Property="VerticalAlignment"
+                                Value="Center"/>
+                </Style>
 
-        <Style x:Key="CardContainerStyle"
-                TargetType="Grid">
-            <Setter Property="Background"
-                    Value="White"/>
-            <Setter Property="Padding"
-                    Value="16"/>
-            <Setter Property="CornerRadius"
-                    Value="8"/>
-            <Setter Property="BorderThickness"
-                    Value="1"/>
-            <Setter Property="BorderBrush"
-                    Value="#E0E0E0"/>
-            <Setter Property="Margin"
-                    Value="0,0,0,16"/>
-        </Style>
+                <Style x:Key="SectionHeaderStyle"
+                       TargetType="TextBlock">
+                        <Setter Property="FontSize"
+                                Value="20"/>
+                        <Setter Property="FontWeight"
+                                Value="SemiBold"/>
+                        <Setter Property="Margin"
+                                Value="0,0,0,16"/>
+                        <Setter Property="Foreground"
+                                Value="#333333"/>
+                </Style>
 
-        <Style x:Key="ListItemContainerStyle"
-                TargetType="ListViewItem">
-            <Setter Property="Padding"
-                    Value="12,8"/>
-            <Setter Property="Margin"
-                    Value="0,0,0,4"/>
-            <Setter Property="CornerRadius"
-                    Value="4"/>
-            <Setter Property="BorderThickness"
-                    Value="1"/>
-            <Setter Property="BorderBrush"
-                    Value="#E0E0E0"/>
-            <Setter Property="Background"
-                    Value="White"/>
-        </Style>
+                <Style x:Key="CardStyle"
+                       TargetType="Grid">
+                        <Setter Property="Background"
+                                Value="White"/>
+                        <Setter Property="CornerRadius"
+                                Value="8"/>
+                        <Setter Property="BorderThickness"
+                                Value="1"/>
+                        <Setter Property="BorderBrush"
+                                Value="#E0E0E0"/>
+                        <Setter Property="Padding"
+                                Value="16"/>
+                        <Setter Property="Margin"
+                                Value="0,0,0,16"/>
+                </Style>
 
-        <Style x:Key="DetailHeaderStyle"
-                TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="16"/>
-            <Setter Property="FontWeight"
-                    Value="SemiBold"/>
-            <Setter Property="Margin"
-                    Value="0,0,0,8"/>
-        </Style>
+                <Style x:Key="ListCardStyle"
+                       TargetType="Grid">
+                        <Setter Property="Background"
+                                Value="White"/>
+                        <Setter Property="CornerRadius"
+                                Value="4"/>
+                        <Setter Property="BorderThickness"
+                                Value="1"/>
+                        <Setter Property="BorderBrush"
+                                Value="#E0E0E0"/>
+                        <Setter Property="Padding"
+                                Value="16,12"/>
+                        <Setter Property="Margin"
+                                Value="0,0,0,8"/>
+                </Style>
 
-        <Style x:Key="DetailLabelStyle"
-                TargetType="TextBlock">
-            <Setter Property="FontWeight"
-                    Value="SemiBold"/>
-            <Setter Property="Margin"
-                    Value="0,4,8,4"/>
-            <Setter Property="VerticalAlignment"
-                    Value="Center"/>
-        </Style>
+                <Style x:Key="ListItemContainerStyle"
+                       TargetType="ListViewItem">
+                        <Setter Property="Padding"
+                                Value="0"/>
+                        <Setter Property="Margin"
+                                Value="0,0,0,8"/>
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Stretch"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                                <ListViewItemPresenter
+                                                        HorizontalContentAlignment="Stretch"
+                                                        SelectedBackground="#F5F5F5"
+                                                        PointerOverBackground="#F9F9F9"
+                                                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                        SelectionCheckMarkVisualEnabled="False"
+                                                        CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                                        CheckBoxBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                                        ContentMargin="{TemplateBinding Padding}"/>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
 
-        <Style x:Key="DetailValueStyle"
-                TargetType="TextBlock">
-            <Setter Property="Margin"
-                    Value="0,4,0,4"/>
-            <Setter Property="TextTrimming"
-                    Value="CharacterEllipsis"/>
-            <Setter Property="VerticalAlignment"
-                    Value="Center"/>
-        </Style>
+                <Style x:Key="DetailLabelStyle"
+                       TargetType="TextBlock">
+                        <Setter Property="FontWeight"
+                                Value="SemiBold"/>
+                        <Setter Property="Margin"
+                                Value="0,4,8,4"/>
+                        <Setter Property="VerticalAlignment"
+                                Value="Center"/>
+                        <Setter Property="Foreground"
+                                Value="#555555"/>
+                </Style>
 
-        <Style x:Key="PrimaryButtonStyle"
-                TargetType="Button"
-                BasedOn="{StaticResource AccentButtonStyle}">
-            <Setter Property="Background"
-                    Value="#DE2232"/>
-            <Setter Property="Foreground"
-                    Value="White"/>
-            <Setter Property="CornerRadius"
-                    Value="4"/>
-            <Setter Property="Padding"
-                    Value="16,8"/>
-        </Style>
+                <Style x:Key="DetailValueStyle"
+                       TargetType="TextBlock">
+                        <Setter Property="Margin"
+                                Value="0,4,0,4"/>
+                        <Setter Property="TextTrimming"
+                                Value="CharacterEllipsis"/>
+                        <Setter Property="VerticalAlignment"
+                                Value="Center"/>
+                </Style>
 
-        <Style x:Key="SecondaryButtonStyle"
-                TargetType="Button">
-            <Setter Property="Foreground"
-                    Value="#DE2232"/>
-            <Setter Property="Background"
-                    Value="Transparent"/>
-            <Setter Property="BorderBrush"
-                    Value="#DE2232"/>
-            <Setter Property="BorderThickness"
-                    Value="1"/>
-            <Setter Property="CornerRadius"
-                    Value="4"/>
-            <Setter Property="Padding"
-                    Value="16,8"/>
-        </Style>
+                <Style x:Key="TabButtonStyle"
+                       TargetType="RadioButton">
+                        <Setter Property="Background"
+                                Value="Transparent"/>
+                        <Setter Property="Foreground"
+                                Value="#f5f5f5"/>
+                        <Setter Property="Padding"
+                                Value="16,8"/>
+                        <Setter Property="FontWeight"
+                                Value="Medium"/>
+                        <Setter Property="BorderThickness"
+                                Value="0,0,0,3"/>
+                        <Setter Property="BorderBrush"
+                                Value="Transparent"/>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                        <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup x:Name="CommonStates">
+                                                                        <VisualState x:Name="Normal"/>
+                                                                        <VisualState x:Name="PointerOver">
+                                                                                <Storyboard>
+                                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                                                                       Storyboard.TargetProperty="Foreground">
+                                                                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                                                                        Value="White"/>
+                                                                                        </ObjectAnimationUsingKeyFrames>
+                                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BorderElement"
+                                                                                                                       Storyboard.TargetProperty="BorderBrush">
+                                                                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                                                                        Value="#f5f5f5"/>
+                                                                                        </ObjectAnimationUsingKeyFrames>
+                                                                                </Storyboard>
+                                                                        </VisualState>
+                                                                        <VisualState x:Name="Pressed"/>
+                                                                </VisualStateGroup>
+                                                                <VisualStateGroup x:Name="CheckStates">
+                                                                        <VisualState x:Name="Checked">
+                                                                                <Storyboard>
+                                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                                                                       Storyboard.TargetProperty="Foreground">
+                                                                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                                                                        Value="White"/>
+                                                                                        </ObjectAnimationUsingKeyFrames>
+                                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BorderElement"
+                                                                                                                       Storyboard.TargetProperty="BorderBrush">
+                                                                                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                                                                                        Value="White"/>
+                                                                                        </ObjectAnimationUsingKeyFrames>
+                                                                                </Storyboard>
+                                                                        </VisualState>
+                                                                        <VisualState x:Name="Unchecked"/>
+                                                                        <VisualState x:Name="Indeterminate"/>
+                                                                </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+                                                        <Grid>
+                                                                <Border x:Name="BorderElement"
+                                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                                                        <ContentPresenter x:Name="ContentPresenter"
+                                                                                          Foreground="{TemplateBinding Foreground}"
+                                                                                          Margin="{TemplateBinding Padding}"
+                                                                                          HorizontalAlignment="Center"
+                                                                                          VerticalAlignment="Center"/>
+                                                                </Border>
+                                                        </Grid>
+                                                </Grid>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
 
-        <Style x:Key="TabButtonStyle"
-                TargetType="RadioButton">
-            <Setter Property="Margin"
-                    Value="0,0,8,0"/>
-            <Setter Property="Padding"
-                    Value="16,8"/>
-            <Setter Property="Background"
-                    Value="Transparent"/>
-            <Setter Property="Foreground"
-                    Value="#333333"/>
-            <Setter Property="BorderThickness"
-                    Value="0,0,0,3"/>
-            <Setter Property="BorderBrush"
-                    Value="Transparent"/>
-            <Setter Property="FontWeight"
-                    Value="SemiBold"/>
-        </Style>
-    </Page.Resources>
+                <!-- Botões -->
+                <Style x:Key="PrimaryButtonStyle"
+                       TargetType="Button">
+                        <Setter Property="Background"
+                                Value="#DE2232"/>
+                        <Setter Property="Foreground"
+                                Value="White"/>
+                        <Setter Property="CornerRadius"
+                                Value="4"/>
+                        <Setter Property="Padding"
+                                Value="16,8"/>
+                        <Setter Property="MinWidth"
+                                Value="120"/>
+                        <Setter Property="HorizontalAlignment"
+                                Value="Left"/>
+                </Style>
 
-    <!-- Estrutura Principal -->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+                <Style x:Key="SecondaryButtonStyle"
+                       TargetType="Button">
+                        <Setter Property="Foreground"
+                                Value="#DE2232"/>
+                        <Setter Property="Background"
+                                Value="Transparent"/>
+                        <Setter Property="BorderBrush"
+                                Value="#DE2232"/>
+                        <Setter Property="BorderThickness"
+                                Value="1"/>
+                        <Setter Property="CornerRadius"
+                                Value="4"/>
+                        <Setter Property="Padding"
+                                Value="16,8"/>
+                        <Setter Property="MinWidth"
+                                Value="100"/>
+                </Style>
 
-        <!-- Cabeçalho -->
-        <Grid Grid.Row="0"
-                Padding="24,16"
-                Background="#DE2232">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                <Style x:Key="IconButtonStyle"
+                       TargetType="Button">
+                        <Setter Property="Background"
+                                Value="Transparent"/>
+                        <Setter Property="Width"
+                                Value="40"/>
+                        <Setter Property="Height"
+                                Value="40"/>
+                        <Setter Property="CornerRadius"
+                                Value="20"/>
+                        <Setter Property="Padding"
+                                Value="8"/>
+                </Style>
 
-            <!-- Logo -->
-            <Image Grid.Column="0"
-                    Source="/Assets/Icons/icon.svg"
-                    Width="40"
-                    Height="40"
-                   VerticalAlignment="Center"
-                    Margin="0,0,16,0"/>
+                <!-- ComboBox e outros controles -->
+                <Style x:Key="FormComboBoxStyle"
+                       TargetType="ComboBox">
+                        <Setter Property="Margin"
+                                Value="0,0,0,8"/>
+                        <Setter Property="HorizontalAlignment"
+                                Value="Stretch"/>
+                        <Setter Property="MinHeight"
+                                Value="40"/>
+                </Style>
 
-            <!-- Nome do Aplicativo -->
-            <TextBlock Grid.Column="1"
-                    Text="RubiRide"
-                    FontSize="22"
-                    FontWeight="SemiBold"
-                       Foreground="White"
-                    VerticalAlignment="Center"/>
-        </Grid>
+                <Style x:Key="FormTextBoxStyle"
+                       TargetType="TextBox">
+                        <Setter Property="Margin"
+                                Value="0,0,0,8"/>
+                        <Setter Property="MinHeight"
+                                Value="40"/>
+                </Style>
+        </Page.Resources>
 
-        <!-- Navegação por Tabs -->
-        <StackPanel Grid.Row="1"
-                Orientation="Horizontal"
-                Padding="24,0,24,0"
-                Background="#F5F5F5">
-            <RadioButton x:Name="VehiclesTab"
-                    Content="Veículos"
-                    IsChecked="True"
-                    Style="{StaticResource TabButtonStyle}"
-                         Checked="TabButton_Checked"
-                    Tag="VehiclesSection"/>
-            <RadioButton x:Name="DriversTab"
-                    Content="Motoristas"
-                    Style="{StaticResource TabButtonStyle}"
-                         Checked="TabButton_Checked"
-                    Tag="DriversSection"/>
-            <RadioButton x:Name="RoutesTab"
-                    Content="Rotas"
-                    Style="{StaticResource TabButtonStyle}"
-                         Checked="TabButton_Checked"
-                    Tag="RoutesSection"/>
-        </StackPanel>
-
-        <!-- Conteúdo Principal -->
-        <Grid Grid.Row="2"
-                Padding="24">
-            <!-- Seção de Veículos -->
-            <Grid x:Name="VehiclesSection"
-                    Visibility="Visible">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="24"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Lista de Veículos -->
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
+        <!-- Root Grid -->
+        <Grid>
+                <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <!-- Header -->
                         <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                        <!-- Content -->
+                </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"
-                            Text="Veículos"
-                            Style="{StaticResource SectionHeaderStyle}"/>
-
-                    <Button Grid.Row="1"
-                            Content="Adicionar Veículo"
-                            Command="{Binding AddVehicleCommand}"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,16"/>
-
-                    <ListView Grid.Row="2"
-                            ItemsSource="{Binding Vehicles}"
-                            SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
-                              ItemContainerStyle="{StaticResource ListItemContainerStyle}"
-                            Background="#F5F5F5"
-                              BorderThickness="0"
-                            Padding="0">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Vehicle">
-                                <Grid Padding="8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0"
-                                            Text="{x:Bind Model}"
-                                            FontWeight="SemiBold"/>
-                                    <StackPanel Grid.Row="1"
-                                            Orientation="Horizontal"
-                                            Margin="0,4,0,0">
-                                        <TextBlock Text="{x:Bind Year}"
-                                                Opacity="0.8"
-                                                Margin="0,0,8,0"/>
-                                        <TextBlock Text="-"
-                                                Opacity="0.8"
-                                                Margin="0,0,8,0"/>
-                                        <TextBlock Text="{x:Bind LicensePlate}"
-                                                Opacity="0.8"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="1"
-                                            Margin="0,4,0,0"
-                                            Padding="6,1"
-                                            CornerRadius="4"
-                                            HorizontalAlignment="Right"
-                                            Background="{x:Bind Status, Converter={StaticResource StatusToColorConverter}}">
-                                        <TextBlock Text="{x:Bind Status}"
-                                                FontSize="11"
-                                                Foreground="White"/>
-                                    </Border>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-
-                <!-- Separador vertical -->
-                <Rectangle Grid.Column="1"
-                        Width="1"
-                        Fill="#E0E0E0"
-                        Margin="11,0"/>
-
-                <!-- Detalhes do Veículo Selecionado -->
-                <Grid Grid.Column="2"
-                        Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                            Text="Detalhes do Veículo"
-                            Style="{StaticResource SectionHeaderStyle}"/>
-
-                    <ScrollViewer Grid.Row="1"
-                            VerticalScrollBarVisibility="Auto">
-                        <Grid Style="{StaticResource CardContainerStyle}">
-                            <Grid.RowDefinitions>
+                <!-- Header Area -->
+                <Grid Grid.Row="0"
+                      Background="#DE2232">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="64"/>
+                                <!-- Main Header -->
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                <!-- Tab Navigation -->
+                        </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Modelo:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="0"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedVehicle.Model}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="1"
-                                    Grid.Column="0"
-                                    Text="Ano:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="1"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedVehicle.Year}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="2"
-                                    Grid.Column="0"
-                                    Text="Placa:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="2"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedVehicle.LicensePlate}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="3"
-                                    Grid.Column="0"
-                                    Text="Capacidade:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="3"
-                                    Grid.Column="1"
-                                    Style="{StaticResource DetailValueStyle}">
-                                <Run Text="{Binding SelectedVehicle.Capacity}"/>
-                                <Run Text=" toneladas"/>
-                            </TextBlock>
-
-                            <TextBlock Grid.Row="4"
-                                    Grid.Column="0"
-                                    Text="Tipo:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="4"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedVehicle.Type}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="5"
-                                    Grid.Column="0"
-                                    Text="Status:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <StackPanel Grid.Row="5"
-                                    Grid.Column="1"
-                                    Orientation="Horizontal">
-                                <Border Padding="6,2"
-                                        CornerRadius="4"
-                                        Background="{Binding SelectedVehicle.Status, Converter={StaticResource StatusToColorConverter}}">
-                                    <TextBlock Text="{Binding SelectedVehicle.Status}"
-                                            Foreground="White"/>
-                                </Border>
-                            </StackPanel>
-
-                            <TextBlock Grid.Row="6"
-                                    Grid.Column="0"
-                                    Text="ID:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="6"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedVehicle.Id}"
-                                    Style="{StaticResource DetailValueStyle}"
-                                    FontSize="11"
-                                    Opacity="0.6"/>
-                        </Grid>
-                    </ScrollViewer>
-
-                    <StackPanel Grid.Row="2"
-                            Orientation="Horizontal"
-                            Margin="0,16,0,0">
-                        <Button Content="Editar"
-                                Command="{Binding EditVehicleCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="0,0,12,0"/>
-                        <Button Content="Excluir"
-                                Command="{Binding RemoveVehicleCommand}"
-                                Style="{StaticResource SecondaryButtonStyle}"/>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-
-            <!-- Seção de Motoristas -->
-            <Grid x:Name="DriversSection"
-                    Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="24"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Lista de Motoristas -->
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                            Text="Motoristas"
-                            Style="{StaticResource SectionHeaderStyle}"/>
-
-                    <Button Grid.Row="1"
-                            Content="Adicionar Motorista"
-                            Command="{Binding AddDriverCommand}"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,16"/>
-
-                    <ListView Grid.Row="2"
-                            ItemsSource="{Binding Drivers}"
-                            SelectedItem="{Binding SelectedDriver, Mode=TwoWay}"
-                              ItemContainerStyle="{StaticResource ListItemContainerStyle}"
-                            Background="#F5F5F5"
-                              BorderThickness="0"
-                            Padding="0">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Driver">
-                                <Grid Padding="8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0"
-                                            Text="{x:Bind Name}"
-                                            FontWeight="SemiBold"/>
-                                    <StackPanel Grid.Row="1"
-                                            Orientation="Horizontal"
-                                            Margin="0,4,0,0">
-                                        <TextBlock Text="{x:Bind LicenseNumber}"
-                                                Opacity="0.8"
-                                                FontSize="12"/>
-                                    </StackPanel>
-                                    <Border Grid.Row="1"
-                                            Margin="0,4,0,0"
-                                            Padding="6,1"
-                                            CornerRadius="4"
-                                            HorizontalAlignment="Right"
-                                            Background="{x:Bind Status, Converter={StaticResource DriverStatusToColorConverter}}">
-                                        <TextBlock Text="{x:Bind Status}"
-                                                FontSize="11"
-                                                Foreground="White"/>
-                                    </Border>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-
-                <!-- Separador vertical -->
-                <Rectangle Grid.Column="1"
-                        Width="1"
-                        Fill="#E0E0E0"
-                        Margin="11,0"/>
-
-                <!-- Detalhes do Motorista Selecionado -->
-                <Grid Grid.Column="2"
-                        Visibility="{Binding IsDriverSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                            Text="Detalhes do Motorista"
-                            Style="{StaticResource SectionHeaderStyle}"/>
-
-                    <ScrollViewer Grid.Row="1"
-                            VerticalScrollBarVisibility="Auto">
-                        <Grid Style="{StaticResource CardContainerStyle}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Nome:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="0"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedDriver.Name}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="1"
-                                    Grid.Column="0"
-                                    Text="Nº Licença:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="1"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedDriver.LicenseNumber}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="2"
-                                    Grid.Column="0"
-                                    Text="Validade:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <StackPanel Grid.Row="2"
-                                    Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                                <TextBlock Text="{Binding SelectedDriver.LicenseExpirationDate, Converter={StaticResource DateTimeToStringConverter}}"
-                                           Style="{StaticResource DetailValueStyle}"
-                                        VerticalAlignment="Center"/>
-                                <Border Margin="8,0,0,0"
-                                        Padding="6,2"
-                                        CornerRadius="4"
-                                        VerticalAlignment="Center"
-                                        Background="{Binding SelectedDriver.IsLicenseValid, Converter={StaticResource BoolToColorConverter}}">
-                                    <TextBlock Text="{Binding SelectedDriver.IsLicenseValid, Converter={StaticResource BoolToValidityTextConverter}}"
-                                               FontSize="11"
-                                            Foreground="White"/>
-                                </Border>
-                            </StackPanel>
-
-                            <TextBlock Grid.Row="3"
-                                    Grid.Column="0"
-                                    Text="Status:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <StackPanel Grid.Row="3"
-                                    Grid.Column="1"
-                                    Orientation="Horizontal">
-                                <Border Padding="6,2"
-                                        CornerRadius="4"
-                                        Background="{Binding SelectedDriver.Status, Converter={StaticResource DriverStatusToColorConverter}}">
-                                    <TextBlock Text="{Binding SelectedDriver.Status}"
-                                            Foreground="White"/>
-                                </Border>
-                            </StackPanel>
-
-                            <TextBlock Grid.Row="4"
-                                    Grid.Column="0"
-                                    Text="ID:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="4"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedDriver.Id}"
-                                    Style="{StaticResource DetailValueStyle}"
-                                    FontSize="11"
-                                    Opacity="0.6"/>
-                        </Grid>
-                    </ScrollViewer>
-
-                    <StackPanel Grid.Row="2"
-                            Orientation="Horizontal"
-                            Margin="0,16,0,0">
-                        <Button Content="Editar"
-                                Command="{Binding EditDriverCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="0,0,12,0"/>
-                        <Button Content="Excluir"
-                                Command="{Binding RemoveDriverCommand}"
-                                Style="{StaticResource SecondaryButtonStyle}"/>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-
-            <!-- Seção de Rotas -->
-            <Grid x:Name="RoutesSection"
-                    Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="24"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Lista de Rotas -->
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                            Text="Rotas"
-                            Style="{StaticResource SectionHeaderStyle}"/>
-
-                    <Button Grid.Row="1"
-                            Content="Adicionar Rota"
-                            Command="{Binding AddRouteCommand}"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,16"/>
-
-                    <ListView Grid.Row="2"
-                            ItemsSource="{Binding Routes}"
-                            SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
-                              ItemContainerStyle="{StaticResource ListItemContainerStyle}"
-                            Background="#F5F5F5"
-                              BorderThickness="0"
-                            Padding="0">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Route">
-                                <Grid Padding="8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
+                        <!-- Main Header -->
+                        <Grid Grid.Row="0"
+                              Padding="24,8">
+                                <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                                </Grid.ColumnDefinitions>
 
-                                    <StackPanel Grid.Row="0"
-                                            Grid.Column="0"
-                                            Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind StartLocation}"
-                                                FontWeight="SemiBold"/>
-                                        <TextBlock Text=" → "
-                                                FontWeight="SemiBold"/>
-                                        <TextBlock Text="{x:Bind EndLocation}"
-                                                FontWeight="SemiBold"/>
-                                    </StackPanel>
-
-                                    <StackPanel Grid.Row="1"
-                                            Grid.Column="0"
+                                <!-- Logo e Título -->
+                                <StackPanel Grid.Column="0"
                                             Orientation="Horizontal"
-                                            Margin="0,4,0,0">
-                                        <TextBlock Text="{x:Bind Distance, Converter={StaticResource DistanceFormatter}}"
-                                                Opacity="0.8"
-                                                Margin="0,0,8,0"/>
-                                        <TextBlock Text="-"
-                                                Opacity="0.8"
-                                                Margin="0,0,8,0"/>
-                                        <TextBlock Text="{x:Bind Driver.Name}"
-                                                Opacity="0.8"/>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
+                                            VerticalAlignment="Center">
+                                        <Image Source="/Assets/Icons/icon.svg"
+                                               Width="40"
+                                               Height="40"
+                                               Margin="0,0,16,0"/>
+                                        <TextBlock Text="RubiRide"
+                                                   Style="{StaticResource PageTitleStyle}"/>
+                                </StackPanel>
 
-                <!-- Separador vertical -->
-                <Rectangle Grid.Column="1"
-                        Width="1"
-                        Fill="#E0E0E0"
-                        Margin="11,0"/>
-
-                <!-- Detalhes da Rota Selecionada -->
-                <Grid Grid.Column="2"
-                        Visibility="{Binding IsRouteSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0"
-                            Text="Detalhes da Rota"
-                            Style="{StaticResource SectionHeaderStyle}"/>
-
-                    <ScrollViewer Grid.Row="1"
-                            VerticalScrollBarVisibility="Auto">
-                        <Grid Style="{StaticResource CardContainerStyle}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Origem:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="0"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedRoute.StartLocation}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="1"
-                                    Grid.Column="0"
-                                    Text="Destino:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="1"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedRoute.EndLocation}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="2"
-                                    Grid.Column="0"
-                                    Text="Distância:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="2"
-                                    Grid.Column="1"
-                                    Style="{StaticResource DetailValueStyle}">
-                                <Run Text="{Binding SelectedRoute.Distance}"/>
-                                <Run Text=" km"/>
-                            </TextBlock>
-
-                            <TextBlock Grid.Row="3"
-                                    Grid.Column="0"
-                                    Text="Duração:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="3"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedRoute.EstimatedDuration, Converter={StaticResource TimeSpanFormatter}}"
-                                       Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="4"
-                                    Grid.Column="0"
-                                    Text="Motorista:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="4"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedRoute.Driver.Name}"
-                                    Style="{StaticResource DetailValueStyle}"/>
-
-                            <TextBlock Grid.Row="5"
-                                    Grid.Column="0"
-                                    Text="Veículo:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <StackPanel Grid.Row="5"
-                                    Grid.Column="1"
-                                    Orientation="Horizontal">
-                                <TextBlock Text="{Binding SelectedRoute.Vehicle.Model}"
-                                        Style="{StaticResource DetailValueStyle}"/>
-                                <TextBlock Text=" ("
-                                        Style="{StaticResource DetailValueStyle}"
-                                        Margin="0"/>
-                                <TextBlock Text="{Binding SelectedRoute.Vehicle.LicensePlate}"
-                                        Style="{StaticResource DetailValueStyle}"
-                                        Margin="0"/>
-                                <TextBlock Text=")"
-                                        Style="{StaticResource DetailValueStyle}"
-                                        Margin="0"/>
-                            </StackPanel>
-
-                            <TextBlock Grid.Row="6"
-                                    Grid.Column="0"
-                                    Text="ID:"
-                                    Style="{StaticResource DetailLabelStyle}"/>
-                            <TextBlock Grid.Row="6"
-                                    Grid.Column="1"
-                                    Text="{Binding SelectedRoute.Id}"
-                                    Style="{StaticResource DetailValueStyle}"
-                                    FontSize="11"
-                                    Opacity="0.6"/>
+                                <!-- Área para Pesquisa (Futura Implementação) -->
+                                <CommandBar Grid.Column="2"
+                                            Background="Transparent"
+                                            DefaultLabelPosition="Right"
+                                            Foreground="White">
+                                        <AppBarButton Icon="Refresh"
+                                                      Label="Atualizar"
+                                                      Foreground="White"
+                                                      Click="RefreshButton_Click"/>
+                                        <AppBarButton Icon="Setting"
+                                                      Label="Configurações"
+                                                      Foreground="White"/>
+                                </CommandBar>
                         </Grid>
-                    </ScrollViewer>
 
-                    <StackPanel Grid.Row="2"
-                            Orientation="Horizontal"
-                            Margin="0,16,0,0">
-                        <Button Content="Editar"
-                                Command="{Binding EditRouteCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="0,0,12,0"/>
-                        <Button Content="Excluir"
-                                Command="{Binding RemoveRouteCommand}"
-                                Style="{StaticResource SecondaryButtonStyle}"/>
-                    </StackPanel>
+                        <!-- Tab Navigation -->
+                        <Grid Grid.Row="1"
+                              Background="#DE2232">
+                                <StackPanel Orientation="Horizontal"
+                                            Padding="24,0,24,0">
+                                        <RadioButton x:Name="VehiclesTab"
+                                                     Content="Veículos"
+                                                     IsChecked="True"
+                                                     Style="{StaticResource TabButtonStyle}"
+                                                     Margin="0,0,8,0"
+                                                     Checked="TabButton_Checked"
+                                                     Tag="VehiclesSection"/>
+                                        <RadioButton x:Name="DriversTab"
+                                                     Content="Motoristas"
+                                                     Style="{StaticResource TabButtonStyle}"
+                                                     Margin="8,0,8,0"
+                                                     Checked="TabButton_Checked"
+                                                     Tag="DriversSection"/>
+                                        <RadioButton x:Name="RoutesTab"
+                                                     Content="Rotas"
+                                                     Style="{StaticResource TabButtonStyle}"
+                                                     Margin="8,0,0,0"
+                                                     Checked="TabButton_Checked"
+                                                     Tag="RoutesSection"/>
+                                </StackPanel>
+                        </Grid>
                 </Grid>
-            </Grid>
 
-            <!-- Mensagem de erro -->
-            <Border x:Name="ErrorMessageBorder"
-                    Background="#FFEBEE"
-                    BorderBrush="#F44336"
-                    BorderThickness="1"
-                    CornerRadius="4"
-                    Padding="16"
-                    Margin="0,16,0,0"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Center"
-                    Visibility="Collapsed">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE783;"
-                            Foreground="#F44336"
-                            Margin="0,0,12,0"/>
-                    <TextBlock x:Name="ErrorMessageText"
-                            Foreground="#D32F2F"/>
-                </StackPanel>
-            </Border>
+                <!-- Main Content Area -->
+                <Grid Grid.Row="1"
+                      Background="#F5F5F5">
+                        <!-- ScrollViewer para garantir que o conteúdo seja rolável em telas menores -->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <Grid Padding="24,24,24,24">
+                                        <!-- Seção de Veículos -->
+                                        <Grid x:Name="VehiclesSection"
+                                              Visibility="Visible">
+                                                <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <!-- Section header -->
+                                                        <RowDefinition Height="*"/>
+                                                        <!-- Content -->
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Header da Seção -->
+                                                <Grid Grid.Row="0"
+                                                      Margin="0,0,0,16">
+                                                        <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Grid.Column="0"
+                                                                   Text="Gerenciamento de Veículos"
+                                                                   Style="{StaticResource SectionHeaderStyle}"/>
+
+                                                        <Button Grid.Column="1"
+                                                                Content="Adicionar Veículo"
+                                                                Command="{Binding AddVehicleCommand}"
+                                                                Style="{StaticResource PrimaryButtonStyle}"/>
+                                                </Grid>
+
+                                                <!-- Conteúdo Principal - Layout Adaptável -->
+                                                <Grid Grid.Row="1">
+                                                        <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup>
+                                                                        <VisualState>
+                                                                                <VisualState.StateTriggers>
+                                                                                        <AdaptiveTrigger MinWindowWidth="0"/>
+                                                                                </VisualState.StateTriggers>
+                                                                                <VisualState.Setters>
+                                                                                        <Setter Target="VehiclesListGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="VehiclesDetailsGrid.Visibility"
+                                                                                                Value="Collapsed"/>
+                                                                                        <Setter Target="BackToListButton.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                </VisualState.Setters>
+                                                                        </VisualState>
+                                                                        <VisualState>
+                                                                                <VisualState.StateTriggers>
+                                                                                        <AdaptiveTrigger MinWindowWidth="800"/>
+                                                                                </VisualState.StateTriggers>
+                                                                                <VisualState.Setters>
+                                                                                        <Setter Target="VehiclesListGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="VehiclesDetailsGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="BackToListButton.Visibility"
+                                                                                                Value="Collapsed"/>
+                                                                                </VisualState.Setters>
+                                                                        </VisualState>
+                                                                </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+
+                                                        <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"
+                                                                                  MinWidth="300"/>
+                                                                <ColumnDefinition Width="16"/>
+                                                                <ColumnDefinition Width="*"
+                                                                                  MinWidth="300"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- Lista de Veículos -->
+                                                        <Grid x:Name="VehiclesListGrid"
+                                                              Grid.Column="0">
+                                                                <ListView x:Name="VehiclesList"
+                                                                          ItemsSource="{Binding Vehicles}"
+                                                                          SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
+                                                                          ItemContainerStyle="{StaticResource ListItemContainerStyle}"
+                                                                          SelectionChanged="VehiclesList_SelectionChanged"
+                                                                          Background="Transparent"
+                                                                          BorderThickness="0"
+                                                                          Padding="0">
+                                                                        <ListView.ItemTemplate>
+                                                                                <DataTemplate x:DataType="models:Vehicle">
+                                                                                        <Grid Style="{StaticResource ListCardStyle}">
+                                                                                                <Grid.RowDefinitions>
+                                                                                                        <RowDefinition Height="Auto"/>
+                                                                                                        <RowDefinition Height="Auto"/>
+                                                                                                </Grid.RowDefinitions>
+                                                                                                <Grid.ColumnDefinitions>
+                                                                                                        <ColumnDefinition Width="*"/>
+                                                                                                        <ColumnDefinition Width="Auto"/>
+                                                                                                </Grid.ColumnDefinitions>
+
+                                                                                                <!-- Informações do Veículo -->
+                                                                                                <TextBlock Grid.Row="0"
+                                                                                                           Grid.Column="0"
+                                                                                                           Text="{x:Bind Model}"
+                                                                                                           FontWeight="SemiBold"
+                                                                                                           FontSize="16"/>
+
+                                                                                                <!-- Status do Veículo -->
+                                                                                                <Border Grid.Row="0"
+                                                                                                        Grid.Column="1"
+                                                                                                        Padding="8,4"
+                                                                                                        CornerRadius="4"
+                                                                                                        Background="{x:Bind Status, Converter={StaticResource StatusToColorConverter}}">
+                                                                                                        <TextBlock Text="{x:Bind Status}"
+                                                                                                                   Foreground="White"
+                                                                                                                   FontSize="12"/>
+                                                                                                </Border>
+
+                                                                                                <!-- Detalhes do Veículo -->
+                                                                                                <StackPanel Grid.Row="1"
+                                                                                                            Grid.Column="0"
+                                                                                                            Grid.ColumnSpan="2"
+                                                                                                            Orientation="Horizontal"
+                                                                                                            Margin="0,8,0,0">
+                                                                                                        <TextBlock Text="{x:Bind Year}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text=" - "
+                                                                                                                   Opacity="0.7"
+                                                                                                                   Margin="4,0"/>
+                                                                                                        <TextBlock Text="{x:Bind LicensePlate}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text=" - "
+                                                                                                                   Opacity="0.7"
+                                                                                                                   Margin="4,0"/>
+                                                                                                        <TextBlock Text="{x:Bind Capacity}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text=" ton"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                </StackPanel>
+                                                                                        </Grid>
+                                                                                </DataTemplate>
+                                                                        </ListView.ItemTemplate>
+                                                                        <ListView.HeaderTemplate>
+                                                                                <DataTemplate>
+                                                                                        <Grid Height="40"
+                                                                                              Margin="0,0,0,8">
+                                                                                                <TextBlock Text="Veículos Disponíveis"
+                                                                                                           FontWeight="SemiBold"
+                                                                                                           VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                </DataTemplate>
+                                                                        </ListView.HeaderTemplate>
+                                                                </ListView>
+                                                        </Grid>
+
+                                                        <!-- Separador -->
+                                                        <Rectangle Grid.Column="1"
+                                                                   Width="1"
+                                                                   Fill="#E0E0E0"
+                                                                   Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                                        <!-- Detalhes do Veículo -->
+                                                        <Grid x:Name="VehiclesDetailsGrid"
+                                                              Grid.Column="2"
+                                                              Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="*"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <!-- Cabeçalho dos Detalhes -->
+                                                                <Grid Grid.Row="0"
+                                                                      Margin="0,0,0,16">
+                                                                        <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                        </Grid.ColumnDefinitions>
+
+                                                                        <Button x:Name="BackToListButton"
+                                                                                Style="{StaticResource IconButtonStyle}"
+                                                                                Click="BackToListButton_Click"
+                                                                                VerticalAlignment="Center"
+                                                                                Visibility="Collapsed">
+                                                                                <FontIcon Glyph="&#xE72B;"
+                                                                                          FontSize="16"/>
+                                                                        </Button>
+
+                                                                        <TextBlock Grid.Column="1"
+                                                                                   Text="Detalhes do Veículo"
+                                                                                   Style="{StaticResource SectionHeaderStyle}"
+                                                                                   Margin="8,0,0,0"/>
+                                                                </Grid>
+
+                                                                <!-- Card de Detalhes -->
+                                                                <ScrollViewer Grid.Row="1"
+                                                                              VerticalScrollBarVisibility="Auto">
+                                                                        <Grid x:Name="VehicleDetails"
+                                                                              Style="{StaticResource CardStyle}">
+                                                                                <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                </Grid.RowDefinitions>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                        <ColumnDefinition Width="120"/>
+                                                                                        <ColumnDefinition Width="*"/>
+                                                                                </Grid.ColumnDefinitions>
+
+                                                                                <!-- Detalhes do Veículo -->
+                                                                                <TextBlock Grid.Row="0"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Modelo:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="0"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedVehicle.Model}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="1"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Ano:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="1"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedVehicle.Year}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="2"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Placa:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="2"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedVehicle.LicensePlate}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="3"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Capacidade:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <StackPanel Grid.Row="3"
+                                                                                            Grid.Column="1"
+                                                                                            Orientation="Horizontal">
+                                                                                        <TextBlock Text="{Binding SelectedVehicle.Capacity}"
+                                                                                                   Style="{StaticResource DetailValueStyle}"/>
+                                                                                        <TextBlock Text=" toneladas"
+                                                                                                   Style="{StaticResource DetailValueStyle}"/>
+                                                                                </StackPanel>
+
+                                                                                <TextBlock Grid.Row="4"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Tipo:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="4"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedVehicle.Type}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="5"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Status:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <Border Grid.Row="5"
+                                                                                        Grid.Column="1"
+                                                                                        Padding="8,4"
+                                                                                        CornerRadius="4"
+                                                                                        HorizontalAlignment="Left"
+                                                                                        VerticalAlignment="Center"
+                                                                                        Background="{Binding SelectedVehicle.Status, Converter={StaticResource StatusToColorConverter}}">
+                                                                                        <TextBlock Text="{Binding SelectedVehicle.Status}"
+                                                                                                   Foreground="White"/>
+                                                                                </Border>
+
+                                                                                <TextBlock Grid.Row="6"
+                                                                                           Grid.Column="0"
+                                                                                           Text="ID:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="6"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedVehicle.Id}"
+                                                                                           Style="{StaticResource DetailValueStyle}"
+                                                                                           FontSize="11"
+                                                                                           Opacity="0.6"/>
+                                                                        </Grid>
+                                                                </ScrollViewer>
+
+                                                                <!-- Botões de Ação -->
+                                                                <StackPanel Grid.Row="2"
+                                                                            Orientation="Horizontal"
+                                                                            Margin="0,16,0,0">
+                                                                        <Button Content="Editar"
+                                                                                Command="{Binding EditVehicleCommand}"
+                                                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                                                Margin="0,0,16,0"/>
+                                                                        <Button Content="Excluir"
+                                                                                Command="{Binding RemoveVehicleCommand}"
+                                                                                Style="{StaticResource SecondaryButtonStyle}"/>
+                                                                </StackPanel>
+                                                        </Grid>
+                                                </Grid>
+                                        </Grid>
+
+                                        <!-- Seção de Motoristas (Estrutura similar à seção de veículos) -->
+                                        <Grid x:Name="DriversSection"
+                                              Visibility="Collapsed">
+                                                <!-- Implementação similar à seção de veículos -->
+                                                <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <!-- Section header -->
+                                                        <RowDefinition Height="*"/>
+                                                        <!-- Content -->
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Header da Seção -->
+                                                <Grid Grid.Row="0"
+                                                      Margin="0,0,0,16">
+                                                        <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Grid.Column="0"
+                                                                   Text="Gerenciamento de Motoristas"
+                                                                   Style="{StaticResource SectionHeaderStyle}"/>
+
+                                                        <Button Grid.Column="1"
+                                                                Content="Adicionar Motorista"
+                                                                Command="{Binding AddDriverCommand}"
+                                                                Style="{StaticResource PrimaryButtonStyle}"/>
+                                                </Grid>
+
+                                                <!-- Conteúdo Principal - Layout Adaptável -->
+                                                <Grid Grid.Row="1">
+                                                        <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup>
+                                                                        <VisualState>
+                                                                                <VisualState.StateTriggers>
+                                                                                        <AdaptiveTrigger MinWindowWidth="0"/>
+                                                                                </VisualState.StateTriggers>
+                                                                                <VisualState.Setters>
+                                                                                        <Setter Target="DriversListGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="DriversDetailsGrid.Visibility"
+                                                                                                Value="Collapsed"/>
+                                                                                        <Setter Target="BackToDriversListButton.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                </VisualState.Setters>
+                                                                        </VisualState>
+                                                                        <VisualState>
+                                                                                <VisualState.StateTriggers>
+                                                                                        <AdaptiveTrigger MinWindowWidth="800"/>
+                                                                                </VisualState.StateTriggers>
+                                                                                <VisualState.Setters>
+                                                                                        <Setter Target="DriversListGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="DriversDetailsGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="BackToDriversListButton.Visibility"
+                                                                                                Value="Collapsed"/>
+                                                                                </VisualState.Setters>
+                                                                        </VisualState>
+                                                                </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+
+                                                        <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"
+                                                                                  MinWidth="300"/>
+                                                                <ColumnDefinition Width="16"/>
+                                                                <ColumnDefinition Width="*"
+                                                                                  MinWidth="300"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- Lista de Motoristas -->
+                                                        <Grid x:Name="DriversListGrid"
+                                                              Grid.Column="0">
+                                                                <ListView x:Name="DriversList"
+                                                                          ItemsSource="{Binding Drivers}"
+                                                                          SelectedItem="{Binding SelectedDriver, Mode=TwoWay}"
+                                                                          ItemContainerStyle="{StaticResource ListItemContainerStyle}"
+                                                                          SelectionChanged="DriversList_SelectionChanged"
+                                                                          Background="Transparent"
+                                                                          BorderThickness="0"
+                                                                          Padding="0">
+                                                                        <ListView.ItemTemplate>
+                                                                                <DataTemplate x:DataType="models:Driver">
+                                                                                        <Grid Style="{StaticResource ListCardStyle}">
+                                                                                                <Grid.RowDefinitions>
+                                                                                                        <RowDefinition Height="Auto"/>
+                                                                                                        <RowDefinition Height="Auto"/>
+                                                                                                </Grid.RowDefinitions>
+                                                                                                <Grid.ColumnDefinitions>
+                                                                                                        <ColumnDefinition Width="*"/>
+                                                                                                        <ColumnDefinition Width="Auto"/>
+                                                                                                </Grid.ColumnDefinitions>
+
+                                                                                                <!-- Informações do Motorista -->
+                                                                                                <TextBlock Grid.Row="0"
+                                                                                                           Grid.Column="0"
+                                                                                                           Text="{x:Bind Name}"
+                                                                                                           FontWeight="SemiBold"
+                                                                                                           FontSize="16"/>
+
+                                                                                                <!-- Status do Motorista -->
+                                                                                                <Border Grid.Row="0"
+                                                                                                        Grid.Column="1"
+                                                                                                        Padding="8,4"
+                                                                                                        CornerRadius="4"
+                                                                                                        Background="{x:Bind Status, Converter={StaticResource DriverStatusToColorConverter}}">
+                                                                                                        <TextBlock Text="{x:Bind Status}"
+                                                                                                                   Foreground="White"
+                                                                                                                   FontSize="12"/>
+                                                                                                </Border>
+
+                                                                                                <!-- Detalhes do Motorista -->
+                                                                                                <StackPanel Grid.Row="1"
+                                                                                                            Grid.Column="0"
+                                                                                                            Grid.ColumnSpan="2"
+                                                                                                            Orientation="Horizontal"
+                                                                                                            Margin="0,8,0,0">
+                                                                                                        <TextBlock Text="Licença: "
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text="{x:Bind LicenseNumber}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text=" - Exp: "
+                                                                                                                   Opacity="0.7"
+                                                                                                                   Margin="4,0"/>
+                                                                                                        <TextBlock Text="{x:Bind LicenseExpirationDate, Converter={StaticResource DateTimeToStringConverter}}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                </StackPanel>
+                                                                                        </Grid>
+                                                                                </DataTemplate>
+                                                                        </ListView.ItemTemplate>
+                                                                        <ListView.HeaderTemplate>
+                                                                                <DataTemplate>
+                                                                                        <Grid Height="40"
+                                                                                              Margin="0,0,0,8">
+                                                                                                <TextBlock Text="Motoristas Cadastrados"
+                                                                                                           FontWeight="SemiBold"
+                                                                                                           VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                </DataTemplate>
+                                                                        </ListView.HeaderTemplate>
+                                                                </ListView>
+                                                        </Grid>
+
+                                                        <!-- Separador -->
+                                                        <Rectangle Grid.Column="1"
+                                                                   Width="1"
+                                                                   Fill="#E0E0E0"
+                                                                   Visibility="{Binding IsDriverSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                                        <!-- Detalhes do Motorista -->
+                                                        <Grid x:Name="DriversDetailsGrid"
+                                                              Grid.Column="2"
+                                                              Visibility="{Binding IsDriverSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="*"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <!-- Cabeçalho dos Detalhes -->
+                                                                <Grid Grid.Row="0"
+                                                                      Margin="0,0,0,16">
+                                                                        <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                        </Grid.ColumnDefinitions>
+
+                                                                        <Button x:Name="BackToDriversListButton"
+                                                                                Style="{StaticResource IconButtonStyle}"
+                                                                                Click="BackToDriversListButton_Click"
+                                                                                VerticalAlignment="Center"
+                                                                                Visibility="Collapsed">
+                                                                                <FontIcon Glyph="&#xE72B;"
+                                                                                          FontSize="16"/>
+                                                                        </Button>
+
+                                                                        <TextBlock Grid.Column="1"
+                                                                                   Text="Detalhes do Motorista"
+                                                                                   Style="{StaticResource SectionHeaderStyle}"
+                                                                                   Margin="8,0,0,0"/>
+                                                                </Grid>
+
+                                                                <!-- Card de Detalhes -->
+                                                                <ScrollViewer Grid.Row="1"
+                                                                              VerticalScrollBarVisibility="Auto">
+                                                                        <Grid x:Name="DriverDetails"
+                                                                              Style="{StaticResource CardStyle}">
+                                                                                <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                </Grid.RowDefinitions>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                        <ColumnDefinition Width="120"/>
+                                                                                        <ColumnDefinition Width="*"/>
+                                                                                </Grid.ColumnDefinitions>
+
+                                                                                <!-- Detalhes do Motorista -->
+                                                                                <TextBlock Grid.Row="0"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Nome:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="0"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedDriver.Name}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="1"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Nº Licença:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="1"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedDriver.LicenseNumber}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="2"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Validade:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <StackPanel Grid.Row="2"
+                                                                                            Grid.Column="1"
+                                                                                            Orientation="Horizontal"
+                                                                                            VerticalAlignment="Center">
+                                                                                        <TextBlock Text="{Binding SelectedDriver.LicenseExpirationDate, Converter={StaticResource DateTimeToStringConverter}}"
+                                                                                                   Style="{StaticResource DetailValueStyle}"/>
+                                                                                        <Border Margin="12,0,0,0"
+                                                                                                Padding="8,4"
+                                                                                                CornerRadius="4"
+                                                                                                Background="{Binding SelectedDriver.IsLicenseValid, Converter={StaticResource BoolToColorConverter}}">
+                                                                                                <TextBlock Text="{Binding SelectedDriver.IsLicenseValid, Converter={StaticResource BoolToValidityTextConverter}}"
+                                                                                                           FontSize="12"
+                                                                                                           Foreground="White"/>
+                                                                                        </Border>
+                                                                                </StackPanel>
+
+                                                                                <TextBlock Grid.Row="3"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Status:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <Border Grid.Row="3"
+                                                                                        Grid.Column="1"
+                                                                                        Padding="8,4"
+                                                                                        CornerRadius="4"
+                                                                                        HorizontalAlignment="Left"
+                                                                                        Background="{Binding SelectedDriver.Status, Converter={StaticResource DriverStatusToColorConverter}}">
+                                                                                        <TextBlock Text="{Binding SelectedDriver.Status}"
+                                                                                                   Foreground="White"/>
+                                                                                </Border>
+
+                                                                                <TextBlock Grid.Row="4"
+                                                                                           Grid.Column="0"
+                                                                                           Text="ID:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="4"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedDriver.Id}"
+                                                                                           Style="{StaticResource DetailValueStyle}"
+                                                                                           FontSize="11"
+                                                                                           Opacity="0.6"/>
+                                                                        </Grid>
+                                                                </ScrollViewer>
+
+                                                                <!-- Botões de Ação -->
+                                                                <StackPanel Grid.Row="2"
+                                                                            Orientation="Horizontal"
+                                                                            Margin="0,16,0,0">
+                                                                        <Button Content="Editar"
+                                                                                Command="{Binding EditDriverCommand}"
+                                                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                                                Margin="0,0,16,0"/>
+                                                                        <Button Content="Excluir"
+                                                                                Command="{Binding RemoveDriverCommand}"
+                                                                                Style="{StaticResource SecondaryButtonStyle}"/>
+                                                                </StackPanel>
+                                                        </Grid>
+                                                </Grid>
+                                        </Grid>
+
+                                        <!-- Seção de Rotas (Estrutura similar à seção de veículos) -->
+                                        <Grid x:Name="RoutesSection"
+                                              Visibility="Collapsed">
+                                                <!-- Implementação similar à seção de veículos -->
+                                                <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <!-- Section header -->
+                                                        <RowDefinition Height="*"/>
+                                                        <!-- Content -->
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Header da Seção -->
+                                                <Grid Grid.Row="0"
+                                                      Margin="0,0,0,16">
+                                                        <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Grid.Column="0"
+                                                                   Text="Gerenciamento de Rotas"
+                                                                   Style="{StaticResource SectionHeaderStyle}"/>
+
+                                                        <Button Grid.Column="1"
+                                                                Content="Adicionar Rota"
+                                                                Command="{Binding AddRouteCommand}"
+                                                                Style="{StaticResource PrimaryButtonStyle}"/>
+                                                </Grid>
+
+                                                <!-- Conteúdo Principal - Layout Adaptável -->
+                                                <Grid Grid.Row="1">
+                                                        <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup>
+                                                                        <VisualState>
+                                                                                <VisualState.StateTriggers>
+                                                                                        <AdaptiveTrigger MinWindowWidth="0"/>
+                                                                                </VisualState.StateTriggers>
+                                                                                <VisualState.Setters>
+                                                                                        <Setter Target="RoutesListGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="RoutesDetailsGrid.Visibility"
+                                                                                                Value="Collapsed"/>
+                                                                                        <Setter Target="BackToRoutesListButton.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                </VisualState.Setters>
+                                                                        </VisualState>
+                                                                        <VisualState>
+                                                                                <VisualState.StateTriggers>
+                                                                                        <AdaptiveTrigger MinWindowWidth="800"/>
+                                                                                </VisualState.StateTriggers>
+                                                                                <VisualState.Setters>
+                                                                                        <Setter Target="RoutesListGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="RoutesDetailsGrid.Visibility"
+                                                                                                Value="Visible"/>
+                                                                                        <Setter Target="BackToRoutesListButton.Visibility"
+                                                                                                Value="Collapsed"/>
+                                                                                </VisualState.Setters>
+                                                                        </VisualState>
+                                                                </VisualStateGroup>
+                                                        </VisualStateManager.VisualStateGroups>
+
+                                                        <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"
+                                                                                  MinWidth="300"/>
+                                                                <ColumnDefinition Width="16"/>
+                                                                <ColumnDefinition Width="*"
+                                                                                  MinWidth="300"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- Lista de Rotas -->
+                                                        <Grid x:Name="RoutesListGrid"
+                                                              Grid.Column="0">
+                                                                <ListView x:Name="RoutesList"
+                                                                          ItemsSource="{Binding Routes}"
+                                                                          SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
+                                                                          ItemContainerStyle="{StaticResource ListItemContainerStyle}"
+                                                                          SelectionChanged="RoutesList_SelectionChanged"
+                                                                          Background="Transparent"
+                                                                          BorderThickness="0"
+                                                                          Padding="0">
+                                                                        <ListView.ItemTemplate>
+                                                                                <DataTemplate x:DataType="models:Route">
+                                                                                        <Grid Style="{StaticResource ListCardStyle}">
+                                                                                                <Grid.RowDefinitions>
+                                                                                                        <RowDefinition Height="Auto"/>
+                                                                                                        <RowDefinition Height="Auto"/>
+                                                                                                        <RowDefinition Height="Auto"/>
+                                                                                                </Grid.RowDefinitions>
+
+                                                                                                <!-- Origem-Destino -->
+                                                                                                <StackPanel Grid.Row="0"
+                                                                                                            Orientation="Horizontal">
+                                                                                                        <TextBlock Text="{x:Bind StartLocation}"
+                                                                                                                   FontWeight="SemiBold"
+                                                                                                                   FontSize="16"/>
+                                                                                                        <TextBlock Text=" → "
+                                                                                                                   FontWeight="SemiBold"
+                                                                                                                   FontSize="16"/>
+                                                                                                        <TextBlock Text="{x:Bind EndLocation}"
+                                                                                                                   FontWeight="SemiBold"
+                                                                                                                   FontSize="16"/>
+                                                                                                </StackPanel>
+
+                                                                                                <!-- Distância e Duração -->
+                                                                                                <StackPanel Grid.Row="1"
+                                                                                                            Orientation="Horizontal"
+                                                                                                            Margin="0,8,0,0">
+                                                                                                        <TextBlock Text="{x:Bind Distance, Converter={StaticResource DistanceFormatter}}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text=" - "
+                                                                                                                   Opacity="0.7"
+                                                                                                                   Margin="4,0"/>
+                                                                                                        <TextBlock Text="{x:Bind EstimatedDuration, Converter={StaticResource TimeSpanFormatter}}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                </StackPanel>
+
+                                                                                                <!-- Motorista e Veículo -->
+                                                                                                <StackPanel Grid.Row="2"
+                                                                                                            Orientation="Horizontal"
+                                                                                                            Margin="0,4,0,0">
+                                                                                                        <TextBlock Text="Motorista: "
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text="{x:Bind Driver.Name}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                        <TextBlock Text=" | Veículo: "
+                                                                                                                   Opacity="0.7"
+                                                                                                                   Margin="4,0"/>
+                                                                                                        <TextBlock Text="{x:Bind Vehicle.Model}"
+                                                                                                                   Opacity="0.7"/>
+                                                                                                </StackPanel>
+                                                                                        </Grid>
+                                                                                </DataTemplate>
+                                                                        </ListView.ItemTemplate>
+                                                                        <ListView.HeaderTemplate>
+                                                                                <DataTemplate>
+                                                                                        <Grid Height="40"
+                                                                                              Margin="0,0,0,8">
+                                                                                                <TextBlock Text="Rotas Cadastradas"
+                                                                                                           FontWeight="SemiBold"
+                                                                                                           VerticalAlignment="Center"/>
+                                                                                        </Grid>
+                                                                                </DataTemplate>
+                                                                        </ListView.HeaderTemplate>
+                                                                </ListView>
+                                                        </Grid>
+
+                                                        <!-- Separador -->
+                                                        <Rectangle Grid.Column="1"
+                                                                   Width="1"
+                                                                   Fill="#E0E0E0"
+                                                                   Visibility="{Binding IsRouteSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                                        <!-- Detalhes da Rota -->
+                                                        <Grid x:Name="RoutesDetailsGrid"
+                                                              Grid.Column="2"
+                                                              Visibility="{Binding IsRouteSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="*"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <!-- Cabeçalho dos Detalhes -->
+                                                                <Grid Grid.Row="0"
+                                                                      Margin="0,0,0,16">
+                                                                        <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                        </Grid.ColumnDefinitions>
+
+                                                                        <Button x:Name="BackToRoutesListButton"
+                                                                                Style="{StaticResource IconButtonStyle}"
+                                                                                Click="BackToRoutesListButton_Click"
+                                                                                VerticalAlignment="Center"
+                                                                                Visibility="Collapsed">
+                                                                                <FontIcon Glyph="&#xE72B;"
+                                                                                          FontSize="16"/>
+                                                                        </Button>
+
+                                                                        <TextBlock Grid.Column="1"
+                                                                                   Text="Detalhes da Rota"
+                                                                                   Style="{StaticResource SectionHeaderStyle}"
+                                                                                   Margin="8,0,0,0"/>
+                                                                </Grid>
+
+                                                                <!-- Card de Detalhes -->
+                                                                <ScrollViewer Grid.Row="1"
+                                                                              VerticalScrollBarVisibility="Auto">
+                                                                        <Grid x:Name="RouteDetails"
+                                                                              Style="{StaticResource CardStyle}">
+                                                                                <Grid.RowDefinitions>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                        <RowDefinition Height="Auto"/>
+                                                                                </Grid.RowDefinitions>
+                                                                                <Grid.ColumnDefinitions>
+                                                                                        <ColumnDefinition Width="120"/>
+                                                                                        <ColumnDefinition Width="*"/>
+                                                                                </Grid.ColumnDefinitions>
+
+                                                                                <!-- Detalhes da Rota -->
+                                                                                <TextBlock Grid.Row="0"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Origem:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="0"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedRoute.StartLocation}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="1"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Destino:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="1"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedRoute.EndLocation}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="2"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Distância:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <StackPanel Grid.Row="2"
+                                                                                            Grid.Column="1"
+                                                                                            Orientation="Horizontal">
+                                                                                        <TextBlock Text="{Binding SelectedRoute.Distance}"
+                                                                                                   Style="{StaticResource DetailValueStyle}"/>
+                                                                                        <TextBlock Text=" km"
+                                                                                                   Style="{StaticResource DetailValueStyle}"/>
+                                                                                </StackPanel>
+
+                                                                                <TextBlock Grid.Row="3"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Duração:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="3"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedRoute.EstimatedDuration, Converter={StaticResource TimeSpanFormatter}}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="4"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Motorista:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="4"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedRoute.Driver.Name}"
+                                                                                           Style="{StaticResource DetailValueStyle}"/>
+
+                                                                                <TextBlock Grid.Row="5"
+                                                                                           Grid.Column="0"
+                                                                                           Text="Veículo:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <StackPanel Grid.Row="5"
+                                                                                            Grid.Column="1"
+                                                                                            Orientation="Horizontal">
+                                                                                        <TextBlock Text="{Binding SelectedRoute.Vehicle.Model}"
+                                                                                                   Style="{StaticResource DetailValueStyle}"/>
+                                                                                        <TextBlock Text=" ("
+                                                                                                   Style="{StaticResource DetailValueStyle}"
+                                                                                                   Margin="0"/>
+                                                                                        <TextBlock Text="{Binding SelectedRoute.Vehicle.LicensePlate}"
+                                                                                                   Style="{StaticResource DetailValueStyle}"
+                                                                                                   Margin="0"/>
+                                                                                        <TextBlock Text=")"
+                                                                                                   Style="{StaticResource DetailValueStyle}"
+                                                                                                   Margin="0"/>
+                                                                                </StackPanel>
+
+                                                                                <TextBlock Grid.Row="6"
+                                                                                           Grid.Column="0"
+                                                                                           Text="ID:"
+                                                                                           Style="{StaticResource DetailLabelStyle}"/>
+                                                                                <TextBlock Grid.Row="6"
+                                                                                           Grid.Column="1"
+                                                                                           Text="{Binding SelectedRoute.Id}"
+                                                                                           Style="{StaticResource DetailValueStyle}"
+                                                                                           FontSize="11"
+                                                                                           Opacity="0.6"/>
+                                                                        </Grid>
+                                                                </ScrollViewer>
+
+                                                                <!-- Botões de Ação -->
+                                                                <StackPanel Grid.Row="2"
+                                                                            Orientation="Horizontal"
+                                                                            Margin="0,16,0,0">
+                                                                        <Button Content="Editar"
+                                                                                Command="{Binding EditRouteCommand}"
+                                                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                                                Margin="0,0,16,0"/>
+                                                                        <Button Content="Excluir"
+                                                                                Command="{Binding RemoveRouteCommand}"
+                                                                                Style="{StaticResource SecondaryButtonStyle}"/>
+                                                                </StackPanel>
+                                                        </Grid>
+                                                </Grid>
+                                        </Grid>
+                                </Grid>
+                        </ScrollViewer>
+
+                        <!-- Mensagem de Erro -->
+                        <Border x:Name="ErrorMessageBorder"
+                                Background="#FFEBEE"
+                                BorderBrush="#F44336"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="16"
+                                Margin="24,0,24,24"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Center"
+                                MaxWidth="600"
+                                Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal">
+                                        <FontIcon Glyph="&#xE783;"
+                                                  Foreground="#F44336"
+                                                  Margin="0,0,16,0"/>
+                                        <TextBlock x:Name="ErrorMessageText"
+                                                   Foreground="#D32F2F"
+                                                   TextWrapping="Wrap"/>
+                                </StackPanel>
+                        </Border>
+
+                        <!-- Indicador de carregamento -->
+                        <Grid x:Name="LoadingIndicator"
+                              Background="#80000000"
+                              Visibility="Collapsed">
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                        <ProgressRing IsActive="True"
+                                                      Width="48"
+                                                      Height="48"
+                                                      Foreground="White"/>
+                                        <TextBlock Text="Carregando..."
+                                                   Foreground="White"
+                                                   Margin="0,16,0,0"
+                                                   FontWeight="SemiBold"/>
+                                </StackPanel>
+                        </Grid>
+                </Grid>
         </Grid>
-    </Grid>
 </Page>

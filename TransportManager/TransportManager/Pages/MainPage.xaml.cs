@@ -78,6 +78,78 @@ public sealed partial class MainPage : Page
     }
   }
 
+  private void RefreshButton_Click(object sender, RoutedEventArgs e)
+  {
+    // Atualiza os dados com base na aba atual
+    if (VehiclesSection.Visibility == Visibility.Visible)
+    {
+      ViewModel.LoadVehiclesCommand.Execute(null);
+    }
+    else if (DriversSection.Visibility == Visibility.Visible)
+    {
+      ViewModel.LoadDriversCommand.Execute(null);
+    }
+    else if (RoutesSection.Visibility == Visibility.Visible)
+    {
+      ViewModel.LoadRoutesCommand.Execute(null);
+    }
+  }
+
+  #region Navegação responsiva
+
+  private void VehiclesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+  {
+    // Em telas menores, quando um item é selecionado, mostra os detalhes e oculta a lista
+    if (Window.Current.Bounds.Width < 800 && ViewModel.SelectedVehicle != null)
+    {
+      VehiclesList.Visibility = Visibility.Collapsed;
+      VehicleDetails.Visibility = Visibility.Visible;
+    }
+  }
+
+  private void DriversList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+  {
+    // Em telas menores, quando um item é selecionado, mostra os detalhes e oculta a lista
+    if (Window.Current.Bounds.Width < 800 && ViewModel.SelectedDriver != null)
+    {
+      DriversList.Visibility = Visibility.Collapsed;
+      DriverDetails.Visibility = Visibility.Visible;
+    }
+  }
+
+  private void RoutesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+  {
+    // Em telas menores, quando um item é selecionado, mostra os detalhes e oculta a lista
+    if (Window.Current.Bounds.Width < 800 && ViewModel.SelectedRoute != null)
+    {
+      RoutesList.Visibility = Visibility.Collapsed;
+      RouteDetails.Visibility = Visibility.Visible;
+    }
+  }
+
+  private void BackToListButton_Click(object sender, RoutedEventArgs e)
+  {
+    // Voltar para a lista de veículos em telas menores
+    VehicleDetails.Visibility = Visibility.Collapsed;
+    VehiclesList.Visibility = Visibility.Visible;
+  }
+
+  private void BackToDriversListButton_Click(object sender, RoutedEventArgs e)
+  {
+    // Voltar para a lista de motoristas em telas menores
+    DriverDetails.Visibility = Visibility.Collapsed;
+    DriversList.Visibility = Visibility.Visible;
+  }
+
+  private void BackToRoutesListButton_Click(object sender, RoutedEventArgs e)
+  {
+    // Voltar para a lista de rotas em telas menores
+    RouteDetails.Visibility = Visibility.Collapsed;
+    RoutesList.Visibility = Visibility.Visible;
+  }
+
+  #endregion
+
   #region Métodos para Veículos
 
   private async Task<Vehicle?> ShowAddVehicleDialog()
@@ -131,7 +203,7 @@ public sealed partial class MainPage : Page
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Primary,
       Content = form,
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     while (true)
@@ -167,7 +239,7 @@ public sealed partial class MainPage : Page
       PrimaryButtonText = "Remover",
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Close,
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     var result = await dialog.ShowAsync();
@@ -184,7 +256,8 @@ public sealed partial class MainPage : Page
       Header = "Modelo",
       PlaceholderText = "Ex: Volkswagen Constellation",
       Name = "ModelTextBox",
-      Text = vehicle?.Model ?? ""
+      Text = vehicle?.Model ?? "",
+      Style = (Style)Resources["FormTextBoxStyle"]
     };
     stackPanel.Children.Add(modelTextBox);
 
@@ -195,7 +268,8 @@ public sealed partial class MainPage : Page
       Minimum = 1900,
       Maximum = DateTime.Now.Year + 1,
       Value = vehicle?.Year ?? DateTime.Now.Year,
-      Name = "YearNumberBox"
+      Name = "YearNumberBox",
+      Margin = new Thickness(0, 0, 0, 8)
     };
     stackPanel.Children.Add(yearNumberBox);
 
@@ -205,7 +279,8 @@ public sealed partial class MainPage : Page
       Header = "Placa",
       PlaceholderText = "Ex: ABC1234",
       Name = "LicensePlateTextBox",
-      Text = vehicle?.LicensePlate ?? ""
+      Text = vehicle?.LicensePlate ?? "",
+      Style = (Style)Resources["FormTextBoxStyle"]
     };
     stackPanel.Children.Add(licensePlateTextBox);
 
@@ -215,7 +290,8 @@ public sealed partial class MainPage : Page
       Header = "Capacidade (toneladas)",
       Minimum = 0,
       Value = vehicle?.Capacity ?? 0,
-      Name = "CapacityNumberBox"
+      Name = "CapacityNumberBox",
+      Margin = new Thickness(0, 0, 0, 8)
     };
     stackPanel.Children.Add(capacityNumberBox);
 
@@ -225,7 +301,8 @@ public sealed partial class MainPage : Page
       Header = "Tipo",
       ItemsSource = Enum.GetValues(typeof(VehicleType)),
       SelectedItem = vehicle?.Type ?? VehicleType.Car,
-      Name = "TypeComboBox"
+      Name = "TypeComboBox",
+      Style = (Style)Resources["FormComboBoxStyle"]
     };
     stackPanel.Children.Add(typeComboBox);
 
@@ -235,7 +312,8 @@ public sealed partial class MainPage : Page
       Header = "Status",
       ItemsSource = Enum.GetValues(typeof(VehicleStatus)),
       SelectedItem = vehicle?.Status ?? VehicleStatus.Available,
-      Name = "StatusComboBox"
+      Name = "StatusComboBox",
+      Style = (Style)Resources["FormComboBoxStyle"]
     };
     stackPanel.Children.Add(statusComboBox);
 
@@ -268,7 +346,7 @@ public sealed partial class MainPage : Page
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Primary,
       Content = CreateDriverForm(),
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     while (true)
@@ -310,7 +388,7 @@ public sealed partial class MainPage : Page
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Primary,
       Content = form,
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     while (true)
@@ -346,7 +424,7 @@ public sealed partial class MainPage : Page
       PrimaryButtonText = "Remover",
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Close,
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     var result = await dialog.ShowAsync();
@@ -363,7 +441,8 @@ public sealed partial class MainPage : Page
       Header = "Nome",
       PlaceholderText = "Ex: João Silva",
       Name = "NameTextBox",
-      Text = driver?.Name ?? ""
+      Text = driver?.Name ?? "",
+      Style = (Style)Resources["FormTextBoxStyle"]
     };
     stackPanel.Children.Add(nameTextBox);
 
@@ -374,7 +453,8 @@ public sealed partial class MainPage : Page
       PlaceholderText = "Exatos 20 caracteres",
       Name = "LicenseNumberTextBox",
       Text = driver?.LicenseNumber ?? "",
-      MaxLength = 20
+      MaxLength = 20,
+      Style = (Style)Resources["FormTextBoxStyle"]
     };
     stackPanel.Children.Add(licenseNumberTextBox);
 
@@ -383,7 +463,9 @@ public sealed partial class MainPage : Page
     {
       Header = "Expiração da Licença",
       Name = "LicenseExpirationDatePicker",
-      Date = driver?.LicenseExpirationDate ?? DateTime.Now.AddYears(1)
+      Date = driver?.LicenseExpirationDate ?? DateTime.Now.AddYears(1),
+      Margin = new Thickness(0, 0, 0, 8),
+      HorizontalAlignment = HorizontalAlignment.Stretch
     };
     stackPanel.Children.Add(licenseExpirationDatePicker);
 
@@ -393,7 +475,8 @@ public sealed partial class MainPage : Page
       Header = "Status",
       ItemsSource = Enum.GetValues(typeof(DriverStatus)),
       SelectedItem = driver?.Status ?? DriverStatus.Available,
-      Name = "StatusComboBox"
+      Name = "StatusComboBox",
+      Style = (Style)Resources["FormComboBoxStyle"]
     };
     stackPanel.Children.Add(statusComboBox);
 
@@ -427,7 +510,7 @@ public sealed partial class MainPage : Page
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Primary,
       Content = CreateRouteForm(),
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     while (true)
@@ -470,7 +553,7 @@ public sealed partial class MainPage : Page
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Primary,
       Content = form,
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     while (true)
@@ -507,7 +590,7 @@ public sealed partial class MainPage : Page
       PrimaryButtonText = "Remover",
       CloseButtonText = "Cancelar",
       DefaultButton = ContentDialogButton.Close,
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     var result = await dialog.ShowAsync();
@@ -526,7 +609,7 @@ public sealed partial class MainPage : Page
       ItemsSource = ViewModel.Cities,
       SelectedItem = route?.StartLocation ?? ViewModel.Cities.FirstOrDefault() ?? "",
       Name = "StartLocationComboBox",
-      HorizontalAlignment = HorizontalAlignment.Stretch
+      Style = (Style)Resources["FormComboBoxStyle"]
     };
     stackPanel.Children.Add(startLocationComboBox);
 
@@ -537,7 +620,7 @@ public sealed partial class MainPage : Page
       ItemsSource = ViewModel.Cities,
       SelectedItem = route?.EndLocation ?? ViewModel.Cities.LastOrDefault() ?? "",
       Name = "EndLocationComboBox",
-      HorizontalAlignment = HorizontalAlignment.Stretch
+      Style = (Style)Resources["FormComboBoxStyle"]
     };
     stackPanel.Children.Add(endLocationComboBox);
 
@@ -547,19 +630,34 @@ public sealed partial class MainPage : Page
       Header = "Distância (km)",
       Value = route?.Distance ?? 0,
       IsEnabled = false,
-      Name = "DistanceNumberBox"
+      Name = "DistanceNumberBox",
+      Margin = new Thickness(0, 0, 0, 8)
     };
     stackPanel.Children.Add(distanceNumberBox);
 
     // Duração Estimada - Grid para organizar os componentes
-    var durationGrid = new Grid();
+    var durationPanel = new Grid
+    {
+      Margin = new Thickness(0, 0, 0, 8)
+    };
 
-    // Configurar colunas com larguras iguais e espaçamento
-    durationGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-    durationGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(16) }); // Espaçador
-    durationGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-    durationGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(16) }); // Espaçador
-    durationGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+    durationPanel.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+    durationPanel.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+    var durationHeader = new TextBlock
+    {
+      Text = "Duração Estimada",
+      Margin = new Thickness(0, 0, 0, 8)
+    };
+    Grid.SetRow(durationHeader, 0);
+    durationPanel.Children.Add(durationHeader);
+
+    var durationControlsGrid = new Grid();
+    durationControlsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+    durationControlsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) }); // Espaçador
+    durationControlsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+    durationControlsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) }); // Espaçador
+    durationControlsGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
     // Duração - Dias
     var daysNumberBox = new NumberBox
@@ -570,7 +668,7 @@ public sealed partial class MainPage : Page
       Name = "DaysNumberBox"
     };
     Grid.SetColumn(daysNumberBox, 0);
-    durationGrid.Children.Add(daysNumberBox);
+    durationControlsGrid.Children.Add(daysNumberBox);
 
     // Duração - Horas
     var hoursNumberBox = new NumberBox
@@ -582,7 +680,7 @@ public sealed partial class MainPage : Page
       Name = "HoursNumberBox"
     };
     Grid.SetColumn(hoursNumberBox, 2);
-    durationGrid.Children.Add(hoursNumberBox);
+    durationControlsGrid.Children.Add(hoursNumberBox);
 
     // Duração - Minutos
     var minutesNumberBox = new NumberBox
@@ -594,9 +692,12 @@ public sealed partial class MainPage : Page
       Name = "MinutesNumberBox"
     };
     Grid.SetColumn(minutesNumberBox, 4);
-    durationGrid.Children.Add(minutesNumberBox);
+    durationControlsGrid.Children.Add(minutesNumberBox);
 
-    stackPanel.Children.Add(durationGrid);
+    Grid.SetRow(durationControlsGrid, 1);
+    durationPanel.Children.Add(durationControlsGrid);
+
+    stackPanel.Children.Add(durationPanel);
 
     // Motorista
     var driverComboBox = new ComboBox
@@ -606,7 +707,7 @@ public sealed partial class MainPage : Page
       DisplayMemberPath = "Name",
       SelectedItem = route?.Driver ?? ViewModel.Drivers.FirstOrDefault(),
       Name = "DriverComboBox",
-      HorizontalAlignment = HorizontalAlignment.Stretch
+      Style = (Style)Resources["FormComboBoxStyle"]
     };
     stackPanel.Children.Add(driverComboBox);
 
@@ -618,7 +719,7 @@ public sealed partial class MainPage : Page
       DisplayMemberPath = "Model",
       SelectedItem = route?.Vehicle ?? ViewModel.Vehicles.FirstOrDefault(),
       Name = "VehicleComboBox",
-      HorizontalAlignment = HorizontalAlignment.Stretch
+      Style = (Style)Resources["FormComboBoxStyle"]
     };
     stackPanel.Children.Add(vehicleComboBox);
 
@@ -706,7 +807,7 @@ public sealed partial class MainPage : Page
       Title = "Erro de Validação",
       Content = $"Por favor, corrija os seguintes erros:\n\n• {errorMessages}",
       CloseButtonText = "OK",
-      XamlRoot = this.XamlRoot
+      XamlRoot = XamlRoot
     };
 
     await dialog.ShowAsync();
@@ -728,12 +829,12 @@ public sealed partial class MainPage : Page
 
   private void ShowLoadingIndicator()
   {
-    // TODO: Implementar um indicador de carregamento (ProgressRing)
+    LoadingIndicator.Visibility = Visibility.Visible;
   }
 
   private void HideLoadingIndicator()
   {
-    // TODO: Ocultar o indicador de carregamento
+    LoadingIndicator.Visibility = Visibility.Collapsed;
   }
 
   #endregion
