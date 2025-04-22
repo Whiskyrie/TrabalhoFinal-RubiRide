@@ -2,367 +2,807 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:local="using:TransportManager"
+      xmlns:models="using:TransportManager.Models"
+      xmlns:converters="using:TransportManager.Converters"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
+    <Page.Resources>
+        <!-- Conversores -->
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-    <!-- Cabeçalho -->
-    <Grid Grid.Row="0"
-          Margin="20">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
+        <!-- Estilos -->
+        <Style x:Key="SectionHeaderStyle"
+                TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="20"/>
+            <Setter Property="FontWeight"
+                    Value="SemiBold"/>
+            <Setter Property="Margin"
+                    Value="0,0,0,12"/>
+            <Setter Property="Foreground"
+                    Value="#333333"/>
+        </Style>
 
-      <!-- Logo -->
-      <Image Grid.Column="0"
-             Source="C:\Users\evand\Downloads\icon.png"
-             Width="50"
-             Height="50"
-             VerticalAlignment="Center"
-             Margin="0,0,20,0"/>
+        <Style x:Key="CardContainerStyle"
+                TargetType="Grid">
+            <Setter Property="Background"
+                    Value="White"/>
+            <Setter Property="Padding"
+                    Value="16"/>
+            <Setter Property="CornerRadius"
+                    Value="8"/>
+            <Setter Property="BorderThickness"
+                    Value="1"/>
+            <Setter Property="BorderBrush"
+                    Value="#E0E0E0"/>
+            <Setter Property="Margin"
+                    Value="0,0,0,16"/>
+        </Style>
 
-      <!-- Nome do Projeto -->
-      <TextBlock Grid.Column="1"
-                 Text="Sistema de Gerenciamento de Transportes"
-                 Style="{ThemeResource SubtitleTextBlockStyle}"
-                 VerticalAlignment="Center"
-                 TextWrapping="Wrap"/>
-    </Grid>
+        <Style x:Key="ListItemContainerStyle"
+                TargetType="ListViewItem">
+            <Setter Property="Padding"
+                    Value="12,8"/>
+            <Setter Property="Margin"
+                    Value="0,0,0,4"/>
+            <Setter Property="CornerRadius"
+                    Value="4"/>
+            <Setter Property="BorderThickness"
+                    Value="1"/>
+            <Setter Property="BorderBrush"
+                    Value="#E0E0E0"/>
+            <Setter Property="Background"
+                    Value="White"/>
+        </Style>
 
-    <!-- Conteúdo Principal -->
-    <Grid Grid.Row="1">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
+        <Style x:Key="DetailHeaderStyle"
+                TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="16"/>
+            <Setter Property="FontWeight"
+                    Value="SemiBold"/>
+            <Setter Property="Margin"
+                    Value="0,0,0,8"/>
+        </Style>
 
-      <!-- Coluna de Veículos -->
-      <ScrollViewer Grid.Column="0">
-        <StackPanel Margin="20">
-          <!-- Lista de Veículos -->
-          <TextBlock Text="Veículos"
-                     Style="{ThemeResource SubtitleTextBlockStyle}"
-                     Margin="0,0,0,10"/>
-          <ListView ItemsSource="{Binding Vehicles}"
-                    SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
-                    Margin="0,0,0,20">
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <TextBlock>
-                                    <Run Text="{Binding Model}"/>
-                                    <Run Text=" - "/>
-                                    <Run Text="{Binding LicensePlate}"/>
-                </TextBlock>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
+        <Style x:Key="DetailLabelStyle"
+                TargetType="TextBlock">
+            <Setter Property="FontWeight"
+                    Value="SemiBold"/>
+            <Setter Property="Margin"
+                    Value="0,4,8,4"/>
+            <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+        </Style>
 
-          <!-- Detalhes do Veículo Selecionado -->
-          <StackPanel Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
-                      Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                      Padding="15"
-                      Margin="0,0,0,20">
-            <TextBlock Text="Detalhes do Veículo"
-                       Style="{ThemeResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,10"/>
-            <Grid>
-              <Grid.ColumnDefinitions>
+        <Style x:Key="DetailValueStyle"
+                TargetType="TextBlock">
+            <Setter Property="Margin"
+                    Value="0,4,0,4"/>
+            <Setter Property="TextTrimming"
+                    Value="CharacterEllipsis"/>
+            <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle"
+                TargetType="Button"
+                BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Background"
+                    Value="#DE2232"/>
+            <Setter Property="Foreground"
+                    Value="White"/>
+            <Setter Property="CornerRadius"
+                    Value="4"/>
+            <Setter Property="Padding"
+                    Value="16,8"/>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle"
+                TargetType="Button">
+            <Setter Property="Foreground"
+                    Value="#DE2232"/>
+            <Setter Property="Background"
+                    Value="Transparent"/>
+            <Setter Property="BorderBrush"
+                    Value="#DE2232"/>
+            <Setter Property="BorderThickness"
+                    Value="1"/>
+            <Setter Property="CornerRadius"
+                    Value="4"/>
+            <Setter Property="Padding"
+                    Value="16,8"/>
+        </Style>
+
+        <Style x:Key="TabButtonStyle"
+                TargetType="RadioButton">
+            <Setter Property="Margin"
+                    Value="0,0,8,0"/>
+            <Setter Property="Padding"
+                    Value="16,8"/>
+            <Setter Property="Background"
+                    Value="Transparent"/>
+            <Setter Property="Foreground"
+                    Value="#333333"/>
+            <Setter Property="BorderThickness"
+                    Value="0,0,0,3"/>
+            <Setter Property="BorderBrush"
+                    Value="Transparent"/>
+            <Setter Property="FontWeight"
+                    Value="SemiBold"/>
+        </Style>
+    </Page.Resources>
+
+    <!-- Estrutura Principal -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <Grid Grid.Row="0"
+                Padding="24,16"
+                Background="#DE2232">
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-              </Grid.RowDefinitions>
+            </Grid.ColumnDefinitions>
 
-              <TextBlock Grid.Row="0"
-                         Grid.Column="0"
-                         Text="Modelo: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="0"
-                         Grid.Column="1"
-                         Text="{Binding SelectedVehicle.Model}"/>
+            <!-- Logo -->
+            <Image Grid.Column="0"
+                    Source="/Assets/Icons/icon.svg"
+                    Width="40"
+                    Height="40"
+                   VerticalAlignment="Center"
+                    Margin="0,0,16,0"/>
 
-              <TextBlock Grid.Row="1"
-                         Grid.Column="0"
-                         Text="Ano: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="1"
-                         Grid.Column="1"
-                         Text="{Binding SelectedVehicle.Year}"/>
+            <!-- Nome do Aplicativo -->
+            <TextBlock Grid.Column="1"
+                    Text="RubiRide"
+                    FontSize="22"
+                    FontWeight="SemiBold"
+                       Foreground="White"
+                    VerticalAlignment="Center"/>
+        </Grid>
 
-              <TextBlock Grid.Row="2"
-                         Grid.Column="0"
-                         Text="Placa: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="2"
-                         Grid.Column="1"
-                         Text="{Binding SelectedVehicle.LicensePlate}"/>
-
-              <TextBlock Grid.Row="3"
-                         Grid.Column="0"
-                         Text="Capacidade: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="3"
-                         Grid.Column="1"
-                         Text="{Binding SelectedVehicle.Capacity}"/>
-
-              <TextBlock Grid.Row="4"
-                         Grid.Column="0"
-                         Text="Tipo: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="4"
-                         Grid.Column="1"
-                         Text="{Binding SelectedVehicle.Type}"/>
-
-              <TextBlock Grid.Row="5"
-                         Grid.Column="0"
-                         Text="Status: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="5"
-                         Grid.Column="1"
-                         Text="{Binding SelectedVehicle.Status}"/>
-            </Grid>
-          </StackPanel>
-
-          <!-- Botões de Ação para Veículos -->
-          <StackPanel Orientation="Horizontal"
-                      Margin="0,10,0,10">
-            <Button Content="Adicionar Veículo"
-                    Command="{Binding AddVehicleCommand}"
-                    Margin="0,10,10,10"
-                    Style="{ThemeResource AccentButtonStyle}"/>
-            <Button Content="Editar Veículo"
-                    Command="{Binding EditVehicleCommand}"
-                    IsEnabled="{Binding IsVehicleSelected}"
-                    Margin="0,10,10,10"/>
-            <Button Content="Remover Veículo"
-                    Command="{Binding RemoveVehicleCommand}"
-                    IsEnabled="{Binding IsVehicleSelected}"/>
-          </StackPanel>
+        <!-- Navegação por Tabs -->
+        <StackPanel Grid.Row="1"
+                Orientation="Horizontal"
+                Padding="24,0,24,0"
+                Background="#F5F5F5">
+            <RadioButton x:Name="VehiclesTab"
+                    Content="Veículos"
+                    IsChecked="True"
+                    Style="{StaticResource TabButtonStyle}"
+                         Checked="TabButton_Checked"
+                    Tag="VehiclesSection"/>
+            <RadioButton x:Name="DriversTab"
+                    Content="Motoristas"
+                    Style="{StaticResource TabButtonStyle}"
+                         Checked="TabButton_Checked"
+                    Tag="DriversSection"/>
+            <RadioButton x:Name="RoutesTab"
+                    Content="Rotas"
+                    Style="{StaticResource TabButtonStyle}"
+                         Checked="TabButton_Checked"
+                    Tag="RoutesSection"/>
         </StackPanel>
-      </ScrollViewer>
 
-      <!-- Coluna de Rotas e Motoristas -->
-      <ScrollViewer Grid.Column="1">
-        <StackPanel Margin="20">
-          <!-- Lista de Rotas -->
-          <TextBlock Text="Rotas"
-                     Style="{ThemeResource SubtitleTextBlockStyle}"
-                     Margin="0,0,0,10"/>
-          <ListView ItemsSource="{Binding Routes}"
-                    SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
-                    Margin="0,0,0,20">
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <TextBlock>
-                                    <Run Text="{Binding StartLocation}"/>
-                                    <Run Text=" - "/>
-                                    <Run Text="{Binding EndLocation}"/>
-                </TextBlock>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
+        <!-- Conteúdo Principal -->
+        <Grid Grid.Row="2"
+                Padding="24">
+            <!-- Seção de Veículos -->
+            <Grid x:Name="VehiclesSection"
+                    Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-          <!-- Detalhes da Rota Selecionada -->
-          <StackPanel Visibility="{Binding IsRouteSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
-                      Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                      Padding="15"
-                      Margin="0,0,0,20">
-            <TextBlock Text="Detalhes da Rota"
-                       Style="{ThemeResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,10"/>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-              </Grid.RowDefinitions>
+                <!-- Lista de Veículos -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-              <TextBlock Grid.Row="0"
-                         Grid.Column="0"
-                         Text="Nome: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="0"
-                         Grid.Column="1"
-                         Text="{Binding SelectedRoute.Driver.Name}"/>
+                    <TextBlock Grid.Row="0"
+                            Text="Veículos"
+                            Style="{StaticResource SectionHeaderStyle}"/>
 
-              <TextBlock Grid.Row="1"
-                         Grid.Column="0"
-                         Text="Origem: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="1"
-                         Grid.Column="1"
-                         Text="{Binding SelectedRoute.StartLocation}"/>
+                    <Button Grid.Row="1"
+                            Content="Adicionar Veículo"
+                            Command="{Binding AddVehicleCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,16"/>
 
-              <TextBlock Grid.Row="2"
-                         Grid.Column="0"
-                         Text="Destino: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="2"
-                         Grid.Column="1"
-                         Text="{Binding SelectedRoute.EndLocation}"/>
+                    <ListView Grid.Row="2"
+                            ItemsSource="{Binding Vehicles}"
+                            SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
+                              ItemContainerStyle="{StaticResource ListItemContainerStyle}"
+                            Background="#F5F5F5"
+                              BorderThickness="0"
+                            Padding="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Vehicle">
+                                <Grid Padding="8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-              <TextBlock Grid.Row="3"
-                         Grid.Column="0"
-                         Text="Distância: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="3"
-                         Grid.Column="1"
-                         Text="{Binding SelectedRoute.Distance}"/>
+                                    <TextBlock Grid.Row="0"
+                                            Text="{x:Bind Model}"
+                                            FontWeight="SemiBold"/>
+                                    <StackPanel Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,4,0,0">
+                                        <TextBlock Text="{x:Bind Year}"
+                                                Opacity="0.8"
+                                                Margin="0,0,8,0"/>
+                                        <TextBlock Text="-"
+                                                Opacity="0.8"
+                                                Margin="0,0,8,0"/>
+                                        <TextBlock Text="{x:Bind LicensePlate}"
+                                                Opacity="0.8"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="1"
+                                            Margin="0,4,0,0"
+                                            Padding="6,1"
+                                            CornerRadius="4"
+                                            HorizontalAlignment="Right"
+                                            Background="{x:Bind Status, Converter={StaticResource StatusToColorConverter}}">
+                                        <TextBlock Text="{x:Bind Status}"
+                                                FontSize="11"
+                                                Foreground="White"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
 
-              <TextBlock Grid.Row="4"
-                         Grid.Column="0"
-                         Text="Duração Estimada: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="4"
-                         Grid.Column="1"
-                         Text="{Binding SelectedRoute.EstimatedDuration}"/>
+                <!-- Separador vertical -->
+                <Rectangle Grid.Column="1"
+                        Width="1"
+                        Fill="#E0E0E0"
+                        Margin="11,0"/>
 
-              <TextBlock Grid.Row="5"
-                         Grid.Column="0"
-                         Text="Veículo: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="5"
-                         Grid.Column="1"
-                         Text="{Binding SelectedRoute.Vehicle.Model}"/>
+                <!-- Detalhes do Veículo Selecionado -->
+                <Grid Grid.Column="2"
+                        Visibility="{Binding IsVehicleSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                            Text="Detalhes do Veículo"
+                            Style="{StaticResource SectionHeaderStyle}"/>
+
+                    <ScrollViewer Grid.Row="1"
+                            VerticalScrollBarVisibility="Auto">
+                        <Grid Style="{StaticResource CardContainerStyle}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="Modelo:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="0"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedVehicle.Model}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="1"
+                                    Grid.Column="0"
+                                    Text="Ano:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="1"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedVehicle.Year}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="2"
+                                    Grid.Column="0"
+                                    Text="Placa:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="2"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedVehicle.LicensePlate}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="3"
+                                    Grid.Column="0"
+                                    Text="Capacidade:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="3"
+                                    Grid.Column="1"
+                                    Style="{StaticResource DetailValueStyle}">
+                                <Run Text="{Binding SelectedVehicle.Capacity}"/>
+                                <Run Text=" toneladas"/>
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="4"
+                                    Grid.Column="0"
+                                    Text="Tipo:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="4"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedVehicle.Type}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="5"
+                                    Grid.Column="0"
+                                    Text="Status:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <StackPanel Grid.Row="5"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal">
+                                <Border Padding="6,2"
+                                        CornerRadius="4"
+                                        Background="{Binding SelectedVehicle.Status, Converter={StaticResource StatusToColorConverter}}">
+                                    <TextBlock Text="{Binding SelectedVehicle.Status}"
+                                            Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="6"
+                                    Grid.Column="0"
+                                    Text="ID:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="6"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedVehicle.Id}"
+                                    Style="{StaticResource DetailValueStyle}"
+                                    FontSize="11"
+                                    Opacity="0.6"/>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            Margin="0,16,0,0">
+                        <Button Content="Editar"
+                                Command="{Binding EditVehicleCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="0,0,12,0"/>
+                        <Button Content="Excluir"
+                                Command="{Binding RemoveVehicleCommand}"
+                                Style="{StaticResource SecondaryButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
-          </StackPanel>
 
-          <!-- Botões de Ação para Rotas -->
-          <StackPanel Orientation="Horizontal"
-                      Margin="0,10,0,20">
-            <Button Content="Adicionar Rota"
-                    Command="{Binding AddRouteCommand}"
-                    Margin="0,10,10,10"
-                    Style="{ThemeResource AccentButtonStyle}"/>
-            <Button Content="Editar Rota"
-                    Command="{Binding EditRouteCommand}"
-                    IsEnabled="{Binding IsRouteSelected}"
-                    Margin="0,10,10,10"/>
-            <Button Content="Remover Rota"
-                    Command="{Binding RemoveRouteCommand}"
-                    IsEnabled="{Binding IsRouteSelected}"/>
-          </StackPanel>
+            <!-- Seção de Motoristas -->
+            <Grid x:Name="DriversSection"
+                    Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-          <!-- Lista de Motoristas -->
-          <TextBlock Text="Motoristas"
-                     Style="{ThemeResource SubtitleTextBlockStyle}"
-                     Margin="0,10,0,10"/>
-          <ListView ItemsSource="{Binding Drivers}"
-                    SelectedItem="{Binding SelectedDriver, Mode=TwoWay}"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
-                    Margin="0,0,0,20">
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <TextBlock>
-                                    <Run Text="{Binding Name}"/>
-                                    <Run Text=" - "/>
-                                    <Run Text="{Binding LicenseNumber}"/>
-                </TextBlock>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
+                <!-- Lista de Motoristas -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-          <!-- Detalhes do Motorista Selecionado -->
-          <StackPanel Visibility="{Binding IsDriverSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
-                      Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                      Padding="15"
-                      Margin="0,0,0,20">
-            <TextBlock Text="Detalhes do Motorista"
-                       Style="{ThemeResource SubtitleTextBlockStyle}"
-                       Margin="0,0,0,10"/>
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-              </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0"
+                            Text="Motoristas"
+                            Style="{StaticResource SectionHeaderStyle}"/>
 
-              <TextBlock Grid.Row="0"
-                         Grid.Column="0"
-                         Text="Nome: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="0"
-                         Grid.Column="1"
-                         Text="{Binding SelectedDriver.Name}"/>
+                    <Button Grid.Row="1"
+                            Content="Adicionar Motorista"
+                            Command="{Binding AddDriverCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,16"/>
 
-              <TextBlock Grid.Row="1"
-                         Grid.Column="0"
-                         Text="Número da Carteira: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="1"
-                         Grid.Column="1"
-                         Text="{Binding SelectedDriver.LicenseNumber}"/>
+                    <ListView Grid.Row="2"
+                            ItemsSource="{Binding Drivers}"
+                            SelectedItem="{Binding SelectedDriver, Mode=TwoWay}"
+                              ItemContainerStyle="{StaticResource ListItemContainerStyle}"
+                            Background="#F5F5F5"
+                              BorderThickness="0"
+                            Padding="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Driver">
+                                <Grid Padding="8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-              <TextBlock Grid.Row="2"
-                         Grid.Column="0"
-                         Text="Validade da Carteira: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="2"
-                         Grid.Column="1"
-                         Text="{Binding SelectedDriver.LicenseExpirationDateFormatted}"/>
+                                    <TextBlock Grid.Row="0"
+                                            Text="{x:Bind Name}"
+                                            FontWeight="SemiBold"/>
+                                    <StackPanel Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,4,0,0">
+                                        <TextBlock Text="{x:Bind LicenseNumber}"
+                                                Opacity="0.8"
+                                                FontSize="12"/>
+                                    </StackPanel>
+                                    <Border Grid.Row="1"
+                                            Margin="0,4,0,0"
+                                            Padding="6,1"
+                                            CornerRadius="4"
+                                            HorizontalAlignment="Right"
+                                            Background="{x:Bind Status, Converter={StaticResource DriverStatusToColorConverter}}">
+                                        <TextBlock Text="{x:Bind Status}"
+                                                FontSize="11"
+                                                Foreground="White"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
 
-              <TextBlock Grid.Row="3"
-                         Grid.Column="0"
-                         Text="Status: "
-                         FontWeight="SemiBold"/>
-              <TextBlock Grid.Row="3"
-                         Grid.Column="1"
-                         Text="{Binding SelectedDriver.Status}"/>
+                <!-- Separador vertical -->
+                <Rectangle Grid.Column="1"
+                        Width="1"
+                        Fill="#E0E0E0"
+                        Margin="11,0"/>
+
+                <!-- Detalhes do Motorista Selecionado -->
+                <Grid Grid.Column="2"
+                        Visibility="{Binding IsDriverSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                            Text="Detalhes do Motorista"
+                            Style="{StaticResource SectionHeaderStyle}"/>
+
+                    <ScrollViewer Grid.Row="1"
+                            VerticalScrollBarVisibility="Auto">
+                        <Grid Style="{StaticResource CardContainerStyle}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="Nome:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="0"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedDriver.Name}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="1"
+                                    Grid.Column="0"
+                                    Text="Nº Licença:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="1"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedDriver.LicenseNumber}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="2"
+                                    Grid.Column="0"
+                                    Text="Validade:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <StackPanel Grid.Row="2"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{Binding SelectedDriver.LicenseExpirationDate, Converter={StaticResource DateTimeToStringConverter}}"
+                                           Style="{StaticResource DetailValueStyle}"
+                                        VerticalAlignment="Center"/>
+                                <Border Margin="8,0,0,0"
+                                        Padding="6,2"
+                                        CornerRadius="4"
+                                        VerticalAlignment="Center"
+                                        Background="{Binding SelectedDriver.IsLicenseValid, Converter={StaticResource BoolToColorConverter}}">
+                                    <TextBlock Text="{Binding SelectedDriver.IsLicenseValid, Converter={StaticResource BoolToValidityTextConverter}}"
+                                               FontSize="11"
+                                            Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="3"
+                                    Grid.Column="0"
+                                    Text="Status:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <StackPanel Grid.Row="3"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal">
+                                <Border Padding="6,2"
+                                        CornerRadius="4"
+                                        Background="{Binding SelectedDriver.Status, Converter={StaticResource DriverStatusToColorConverter}}">
+                                    <TextBlock Text="{Binding SelectedDriver.Status}"
+                                            Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="4"
+                                    Grid.Column="0"
+                                    Text="ID:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="4"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedDriver.Id}"
+                                    Style="{StaticResource DetailValueStyle}"
+                                    FontSize="11"
+                                    Opacity="0.6"/>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            Margin="0,16,0,0">
+                        <Button Content="Editar"
+                                Command="{Binding EditDriverCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="0,0,12,0"/>
+                        <Button Content="Excluir"
+                                Command="{Binding RemoveDriverCommand}"
+                                Style="{StaticResource SecondaryButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
-          </StackPanel>
 
-          <!-- Botões de Ação para Motoristas -->
-          <StackPanel Orientation="Horizontal"
-                      Margin="0,0,0,20">
-            <Button Content="Adicionar Motorista"
-                    Command="{Binding AddDriverCommand}"
-                    Margin="0,0,10,0"
-                    Style="{ThemeResource AccentButtonStyle}"/>
-            <Button Content="Editar Motorista"
-                    Command="{Binding EditDriverCommand}"
-                    IsEnabled="{Binding IsDriverSelected}"
-                    Margin="0,0,10,0"/>
-            <Button Content="Remover Motorista"
-                    Command="{Binding RemoveDriverCommand}"
-                    IsEnabled="{Binding IsDriverSelected}"/>
-          </StackPanel>
+            <!-- Seção de Rotas -->
+            <Grid x:Name="RoutesSection"
+                    Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-          <!-- Mensagem de Erro -->
-          <TextBlock x:Name="ErrorMessageTextBlock"
-                     Foreground="Red"
-                     TextWrapping="Wrap"
-                     Visibility="Collapsed"
-                     Margin="0,20,0,0"/>
-        </StackPanel>
-      </ScrollViewer>
+                <!-- Lista de Rotas -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                            Text="Rotas"
+                            Style="{StaticResource SectionHeaderStyle}"/>
+
+                    <Button Grid.Row="1"
+                            Content="Adicionar Rota"
+                            Command="{Binding AddRouteCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,16"/>
+
+                    <ListView Grid.Row="2"
+                            ItemsSource="{Binding Routes}"
+                            SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
+                              ItemContainerStyle="{StaticResource ListItemContainerStyle}"
+                            Background="#F5F5F5"
+                              BorderThickness="0"
+                            Padding="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Route">
+                                <Grid Padding="8">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Row="0"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind StartLocation}"
+                                                FontWeight="SemiBold"/>
+                                        <TextBlock Text=" → "
+                                                FontWeight="SemiBold"/>
+                                        <TextBlock Text="{x:Bind EndLocation}"
+                                                FontWeight="SemiBold"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,4,0,0">
+                                        <TextBlock Text="{x:Bind Distance, Converter={StaticResource DistanceFormatter}}"
+                                                Opacity="0.8"
+                                                Margin="0,0,8,0"/>
+                                        <TextBlock Text="-"
+                                                Opacity="0.8"
+                                                Margin="0,0,8,0"/>
+                                        <TextBlock Text="{x:Bind Driver.Name}"
+                                                Opacity="0.8"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+
+                <!-- Separador vertical -->
+                <Rectangle Grid.Column="1"
+                        Width="1"
+                        Fill="#E0E0E0"
+                        Margin="11,0"/>
+
+                <!-- Detalhes da Rota Selecionada -->
+                <Grid Grid.Column="2"
+                        Visibility="{Binding IsRouteSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                            Text="Detalhes da Rota"
+                            Style="{StaticResource SectionHeaderStyle}"/>
+
+                    <ScrollViewer Grid.Row="1"
+                            VerticalScrollBarVisibility="Auto">
+                        <Grid Style="{StaticResource CardContainerStyle}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="Origem:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="0"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedRoute.StartLocation}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="1"
+                                    Grid.Column="0"
+                                    Text="Destino:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="1"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedRoute.EndLocation}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="2"
+                                    Grid.Column="0"
+                                    Text="Distância:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="2"
+                                    Grid.Column="1"
+                                    Style="{StaticResource DetailValueStyle}">
+                                <Run Text="{Binding SelectedRoute.Distance}"/>
+                                <Run Text=" km"/>
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="3"
+                                    Grid.Column="0"
+                                    Text="Duração:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="3"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedRoute.EstimatedDuration, Converter={StaticResource TimeSpanFormatter}}"
+                                       Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="4"
+                                    Grid.Column="0"
+                                    Text="Motorista:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="4"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedRoute.Driver.Name}"
+                                    Style="{StaticResource DetailValueStyle}"/>
+
+                            <TextBlock Grid.Row="5"
+                                    Grid.Column="0"
+                                    Text="Veículo:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <StackPanel Grid.Row="5"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal">
+                                <TextBlock Text="{Binding SelectedRoute.Vehicle.Model}"
+                                        Style="{StaticResource DetailValueStyle}"/>
+                                <TextBlock Text=" ("
+                                        Style="{StaticResource DetailValueStyle}"
+                                        Margin="0"/>
+                                <TextBlock Text="{Binding SelectedRoute.Vehicle.LicensePlate}"
+                                        Style="{StaticResource DetailValueStyle}"
+                                        Margin="0"/>
+                                <TextBlock Text=")"
+                                        Style="{StaticResource DetailValueStyle}"
+                                        Margin="0"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="6"
+                                    Grid.Column="0"
+                                    Text="ID:"
+                                    Style="{StaticResource DetailLabelStyle}"/>
+                            <TextBlock Grid.Row="6"
+                                    Grid.Column="1"
+                                    Text="{Binding SelectedRoute.Id}"
+                                    Style="{StaticResource DetailValueStyle}"
+                                    FontSize="11"
+                                    Opacity="0.6"/>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            Margin="0,16,0,0">
+                        <Button Content="Editar"
+                                Command="{Binding EditRouteCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Margin="0,0,12,0"/>
+                        <Button Content="Excluir"
+                                Command="{Binding RemoveRouteCommand}"
+                                Style="{StaticResource SecondaryButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <!-- Mensagem de erro -->
+            <Border x:Name="ErrorMessageBorder"
+                    Background="#FFEBEE"
+                    BorderBrush="#F44336"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="16"
+                    Margin="0,16,0,0"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Center"
+                    Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE783;"
+                            Foreground="#F44336"
+                            Margin="0,0,12,0"/>
+                    <TextBlock x:Name="ErrorMessageText"
+                            Foreground="#D32F2F"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
-  </Grid>
 </Page>
